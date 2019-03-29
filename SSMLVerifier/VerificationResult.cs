@@ -12,6 +12,6 @@
 
         public string Error { get; }
 
-        public static VerificationResult Sucess => new VerificationResult(VerificationState.Valid);
+        public static VerificationResult Valid => new VerificationResult(VerificationState.Valid);
     }
 }

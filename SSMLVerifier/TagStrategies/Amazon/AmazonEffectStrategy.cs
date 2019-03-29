@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies.Amazon
@@ -18,7 +17,7 @@ namespace SSMLVerifier.TagStrategies.Amazon
                 return verificationResult;
             }
 
-            return VerificationResult.Sucess;
+            return VerificationResult.Valid;
         }
     }
 }

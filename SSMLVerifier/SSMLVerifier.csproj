@@ -13,9 +13,4 @@
     <Version>1.0.0</Version>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="TagStrategies\Google\" />
-    <Folder Include="TagStrategies\All\" />
-  </ItemGroup>
-
 </Project>

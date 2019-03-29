@@ -5,6 +5,8 @@
         Valid = 0,
         InvalidTag = -1,
         MissingAttribute = -2,
-        InvalidAttributeValue = -3
+        InvalidAttributeValue = -3,
+        ContainerContainsInvalidChilds = -4,
+        InvalidAttribute = -5
     }
 }

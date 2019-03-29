@@ -24,7 +24,7 @@ namespace SSMLVerifier.TagStrategies.Amazon
                 return verificationResult;
             }
 
-            return VerificationResult.Sucess;
+            return VerificationResult.Valid;
         }
     }
 }
