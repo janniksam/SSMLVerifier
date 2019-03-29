@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using SSMLVerifier.Extensions;
 using SSMLVerifier.TagStrategies;
+using SSMLVerifier.TagStrategies.All;
 using SSMLVerifier.TagStrategies.Amazon;
 using SSMLVerifier.TagStrategies.Google;
 
@@ -21,6 +21,8 @@ namespace SSMLVerifier
             new WStrategy(),
             new ParStrategy(),
             new SeqStrategy(),
+            new PStrategy(),
+            new BreakStrategy(),
         };
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace SSMLVerifier
             if (tagStrategy != null)
             {
                 var verificationResult = tagStrategy.Verify(ssmlElement);
-                if (verificationResult != VerificationResult.Sucess)
+                if (verificationResult != VerificationResult.Valid)
                 {
                     return verificationResult;
                 }
@@ -65,13 +67,13 @@ namespace SSMLVerifier
             foreach (var childElement in ssmlElement.Elements())
             {
                 var verificationResult = Verify(childElement);
-                if (verificationResult != VerificationResult.Sucess)
+                if (verificationResult != VerificationResult.Valid)
                 {
                     return verificationResult;
                 }
             }
             
-            return VerificationResult.Sucess;
+            return VerificationResult.Valid;
         }
 
         private static IEnumerable<string> GetValidTags(SsmlPlatform platform)

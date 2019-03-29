@@ -14,9 +14,9 @@ This is a WIP project. Here is the current state of the implementation:
 #### Common tags:
 
 - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) audio 
-- ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) break 
+- ![#ffe900](https://placehold.it/15/ffe900/000000?text=+) break - <i><b>todo:</b> time attribute needs to be validated</i>
 - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) emphasis 
-- ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) p 
+- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) p 
 - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) prosody 
 - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) s
 - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) say-as

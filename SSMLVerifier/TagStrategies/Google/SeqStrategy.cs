@@ -17,7 +17,7 @@ namespace SSMLVerifier.TagStrategies.Google
                 "par", "seq", "media"
             });
             
-            return validationResult ?? VerificationResult.Sucess;
+            return validationResult ?? VerificationResult.Valid;
         }
     }
 }

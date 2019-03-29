@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies
@@ -15,7 +14,7 @@ namespace SSMLVerifier.TagStrategies
 
         protected string TagName { get; }
 
-        protected VerificationResult RequiresAttribute(XElement element, string attributeName, string prefix = null, IReadOnlyCollection<string> validValues = null)
+        protected VerificationResult RequiresAttribute(XElement element, string attributeName, string prefix = null, IReadOnlyCollection<string> validValues = null, bool optional = false)
         {
             if (element == null)
             {
@@ -30,13 +29,18 @@ namespace SSMLVerifier.TagStrategies
             XAttribute attribute;
             if (prefix == null)
             {
-                attribute = xAttributes.FirstOrDefault(p => p.Name.LocalName == attributeName);
+                attribute = xAttributes.SingleOrDefault(p => p.Name.LocalName == attributeName);
             }
             else
             {
                 var namespaceOfPrefix = element.GetNamespaceOfPrefix(prefix);
-                attribute = xAttributes.FirstOrDefault(p => p.Name.LocalName == attributeName &&
-                                                            p.Name.Namespace == namespaceOfPrefix);
+                attribute = xAttributes.SingleOrDefault(p => p.Name.LocalName == attributeName &&
+                                                             p.Name.Namespace == namespaceOfPrefix);
+            }
+
+            if (attribute == null && optional)
+            {
+                return null;
             }
 
             if (attribute == null)
@@ -56,7 +60,43 @@ namespace SSMLVerifier.TagStrategies
             return null;
         }
 
-        public VerificationResult VerifyContainsOnlySpecificElements(XElement element, List<string> validTags)
+        protected VerificationResult HasOnlySpecificAttributes(XElement element, string prefix, string[] validAttributeNames)
+        {
+            if (prefix == null)
+            {
+                foreach (var xAttribute in element.Attributes())
+                {
+                    if (validAttributeNames.Contains(xAttribute.Name.LocalName))
+                    {
+                        continue;
+                    }
+
+                    return new VerificationResult(
+                        VerificationState.InvalidAttribute,
+                        $"The attribute {TagName} can only have the following attributes: {string.Join(",", validAttributeNames)}, but there was a {xAttribute.Name.LocalName}");
+                }
+            }
+            else
+            {
+                var namespaceOfPrefix = element.GetNamespaceOfPrefix(prefix);
+                foreach (var xAttribute in element.Attributes())
+                {
+                    if (validAttributeNames.Contains(xAttribute.Name.LocalName) &&
+                        xAttribute.Name.Namespace == namespaceOfPrefix)
+                    {
+                        continue;
+                    }
+
+                    return new VerificationResult(
+                        VerificationState.InvalidAttribute,
+                        $"The attribute {TagName} can only have the following attributes: {string.Join(",", validAttributeNames)}, but there was a {xAttribute.Name.LocalName}");
+                }
+            }
+
+            return null;
+        }
+
+        protected VerificationResult VerifyContainsOnlySpecificElements(XElement element, List<string> validTags)
         {
             var xElements = element.Elements();
             foreach (var xElement in xElements)
