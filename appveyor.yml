@@ -37,4 +37,4 @@ for:
     package_version: '{version}-alpha'
     assembly_version: '{version}'
     file_version: '{version}'
-informational_version: '{version} (pre-release)'
+    informational_version: '{version} (pre-release)'

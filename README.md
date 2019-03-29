@@ -1,6 +1,6 @@
 # SSMLVerifier
-SSMLVerifier will verify that a given input is valid SSML
-It is based of a javascript implementation by found here:
+SSMLVerifier will verify that a given input is valid SSML.
+It is based of a javascript implementation found here:
 https://github.com/gsdriver/ssml-check
 
 [![Build status master](https://ci.appveyor.com/api/projects/status/uyat18oaarhpwd50?svg=true&passingText=master%20-%20passing&failingText=master%20-%20failing&pendingText=master%20-%20pending)](https://ci.appveyor.com/project/janniksam/SSMLVerifier) 
