@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Title>SSML Verifier</Title>
+    <Description>SSMLVerifier will verify that a given input is valid SSML.</Description>
+    <Authors>janniksam</Authors>
+    <Company>janniksam</Company>
+    <PackageProjectUrl>https://github.com/janniksam/SSMLVerifier</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Copyright>Copyright 2019 © janniksam</Copyright>
+    <PackageLicenseUrl>https://github.com/janniksam/SSMLVerifier/blob/master/LICENSE</PackageLicenseUrl>
     <Version>1.0.0</Version>
   </PropertyGroup>
 
