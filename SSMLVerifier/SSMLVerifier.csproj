@@ -14,7 +14,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="TagStrategies\Google\" />
     <Folder Include="TagStrategies\All\" />
   </ItemGroup>
 

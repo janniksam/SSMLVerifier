@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using SSMLVerifier.Extensions;
 using SSMLVerifier.TagStrategies;
 using SSMLVerifier.TagStrategies.Amazon;
+using SSMLVerifier.TagStrategies.Google;
 
 namespace SSMLVerifier
 {
@@ -18,6 +19,8 @@ namespace SSMLVerifier
             new PhonemeStrategy(),
             new VoiceStrategy(),
             new WStrategy(),
+            new ParStrategy(),
+            new SeqStrategy(),
         };
 
         /// <summary>

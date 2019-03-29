@@ -56,6 +56,24 @@ namespace SSMLVerifier.TagStrategies
             return null;
         }
 
+        public VerificationResult VerifyContainsOnlySpecificElements(XElement element, List<string> validTags)
+        {
+            var xElements = element.Elements();
+            foreach (var xElement in xElements)
+            {
+                if (validTags.Contains(xElement.Name.LocalName))
+                {
+                    continue;
+                }
+
+                return new VerificationResult(
+                    VerificationState.ContainerContainsInvalidChilds,
+                    $"The attribute {TagName} can only the following elements: {string.Join(",", validTags)}, but there was a {xElement.Name.LocalName}");
+            }
+
+            return null;
+        }
+
         public virtual bool IsResponsibleFor(string tag)
         {
             return TagName.Equals(tag);
