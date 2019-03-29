@@ -3,6 +3,10 @@ SSMLVerifier will verify that a given input is valid SSML
 It is based of a javascript implementation by found here:
 https://github.com/gsdriver/ssml-check
 
+[![Build status master](https://ci.appveyor.com/api/projects/status/uyat18oaarhpwd50?svg=true&passingText=master%20-%20passing&failingText=master%20-%20failing&pendingText=master%20-%20pending)](https://ci.appveyor.com/project/janniksam/SSMLVerifier) 
+[![Build status dev](https://ci.appveyor.com/api/projects/status/uyat18oaarhpwd50/branch/dev?svg=true&passingText=dev%20-%20passing&failingText=dev%20-%20failing&pendingText=dev%20-%20pending)](https://ci.appveyor.com/project/janniksam/SSMLVerifier/branch/dev)
+[![NuGet version](https://badge.fury.io/nu/SSMLVerifier.svg)](https://badge.fury.io/nu/SSMLVerifier)
+
 ## WIP
 
 This is a WIP project. Here is the current state of the implementation:
