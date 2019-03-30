@@ -15,13 +15,13 @@ This is a WIP project. Here is the current state of the implementation:
 
 - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) audio 
 - ![#ffe900](https://placehold.it/15/ffe900/000000?text=+) break - <i><b>todo:</b> time attribute needs to be validated</i>
-- ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) emphasis 
+- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) emphasis 
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) p 
 - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) prosody 
-- ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) s
+- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) s
 - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) say-as
 - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) speak
-- ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) sub
+- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) sub
 
 #### Amazon tags:
 

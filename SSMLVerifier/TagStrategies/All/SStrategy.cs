@@ -2,9 +2,9 @@
 
 namespace SSMLVerifier.TagStrategies.All
 {
-    public class PStrategy : BaseTagStrategy
+    public class SStrategy : BaseTagStrategy
     {
-        public PStrategy() : base("p")
+        public SStrategy() : base("s")
         {
         }
 

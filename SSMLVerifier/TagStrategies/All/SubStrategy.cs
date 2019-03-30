@@ -2,15 +2,15 @@
 
 namespace SSMLVerifier.TagStrategies.All
 {
-    public class PStrategy : BaseTagStrategy
+    public class SubStrategy : BaseTagStrategy
     {
-        public PStrategy() : base("p")
+        public SubStrategy() : base("sub")
         {
         }
 
         public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var validationResult = VerifyNoAttributesAllowed(element);
+            var validationResult = VerifyHasOnlySpecificAttributes(element, null, new []{ "alias" });
             if (validationResult != null)
             {
                 return validationResult;

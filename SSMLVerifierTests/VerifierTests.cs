@@ -16,11 +16,11 @@ namespace SSMLVerifierTests
         }
 
         [TestMethod]
-        public void ShouldReturnValidWithOnlyASpeakTag()
+        public void ShouldReturnValidWithASpeakTagAndALangTagOnAmazonPlatform()
         {
             const string testSsml = "<speak>Hello <lang xml:lang='de-DE'>Welt</lang></speak>";
 
-            var verify = m_verifier.Verify(testSsml);
+            var verify = m_verifier.Verify(testSsml, SsmlPlatform.Amazon);
             Assert.AreEqual(VerificationState.Valid, verify.State);
         }
 

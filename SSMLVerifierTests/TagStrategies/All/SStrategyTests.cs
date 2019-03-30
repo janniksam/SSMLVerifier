@@ -6,13 +6,13 @@ using SSMLVerifier.TagStrategies.All;
 namespace SSMLVerifierTests.TagStrategies.All
 {
     [TestClass]
-    public class PStrategyTests
+    public class SStrategyTests
     {
         [TestMethod]
         public void ReturnValidForValidTag()
         {
-            var element = "<p><p></p></p>".ToXElement();
-            var strategy = new PStrategy();
+            var element = "<s><p></p></s>".ToXElement();
+            var strategy = new SStrategy();
             var verificationResult = strategy.Verify(element);
             Assert.AreEqual(VerificationState.Valid, verificationResult.State);
         }
@@ -20,8 +20,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         [TestMethod]
         public void ReturnInvalidvForInvalidAttribute()
         {
-            var element = "<p name=\"test\"></p>".ToXElement();
-            var strategy = new PStrategy();
+            var element = "<s name=\"test\"></s>".ToXElement();
+            var strategy = new SStrategy();
             var verificationResult = strategy.Verify(element);
             Assert.AreEqual(VerificationState.InvalidAttribute, verificationResult.State);
         }

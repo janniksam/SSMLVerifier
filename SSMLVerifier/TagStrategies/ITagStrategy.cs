@@ -5,6 +5,6 @@ namespace SSMLVerifier.TagStrategies
     public interface ITagStrategy
     {
         bool IsResponsibleFor(string tag);
-        VerificationResult Verify(XElement element);
+        VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All);
     }
 }

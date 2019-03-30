@@ -10,7 +10,7 @@ namespace SSMLVerifier.TagStrategies.Google
         {
         }
 
-        public override VerificationResult Verify(XElement element)
+        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
             var validationResult = VerifyContainsOnlySpecificElements(element, new List<string>
             {
