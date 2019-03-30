@@ -8,7 +8,7 @@ namespace SSMLVerifier.TagStrategies.All
         {
         }
 
-        public override VerificationResult Verify(XElement element)
+        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
             if (element.HasAttributes)
             {

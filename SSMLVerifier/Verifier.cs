@@ -23,6 +23,7 @@ namespace SSMLVerifier
             new SeqStrategy(),
             new PStrategy(),
             new BreakStrategy(),
+            new EmphasisStrategy()
         };
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace SSMLVerifier
             var tagStrategy = m_strategies.FirstOrDefault(p => p.IsResponsibleFor(ssmlElement.Name.LocalName));
             if (tagStrategy != null)
             {
-                var verificationResult = tagStrategy.Verify(ssmlElement);
+                var verificationResult = tagStrategy.Verify(ssmlElement, platform);
                 if (verificationResult != VerificationResult.Valid)
                 {
                     return verificationResult;
@@ -66,7 +67,7 @@ namespace SSMLVerifier
 
             foreach (var childElement in ssmlElement.Elements())
             {
-                var verificationResult = Verify(childElement);
+                var verificationResult = Verify(childElement, platform);
                 if (verificationResult != VerificationResult.Valid)
                 {
                     return verificationResult;
@@ -76,6 +77,7 @@ namespace SSMLVerifier
             return VerificationResult.Valid;
         }
 
+        // todo Make this a responsibility of each strategy instead of deciding it here
         private static IEnumerable<string> GetValidTags(SsmlPlatform platform)
         {
             var validTags = new List<string>
@@ -91,7 +93,7 @@ namespace SSMLVerifier
                 "sub"
             };
 
-            if (platform == SsmlPlatform.All || platform == SsmlPlatform.Amazon)
+            if (platform == SsmlPlatform.Amazon)
             {
                 validTags.AddRange(new[]
                 {
@@ -99,7 +101,7 @@ namespace SSMLVerifier
                 });
             }
 
-            if (platform == SsmlPlatform.All || platform == SsmlPlatform.Google)
+            if (platform == SsmlPlatform.Google)
             {
                 validTags.AddRange(new[]
                 {

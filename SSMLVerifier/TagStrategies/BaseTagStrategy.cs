@@ -119,6 +119,6 @@ namespace SSMLVerifier.TagStrategies
             return TagName.Equals(tag);
         }
 
-        public abstract VerificationResult Verify(XElement element);
+        public abstract VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All);
     }
 }
