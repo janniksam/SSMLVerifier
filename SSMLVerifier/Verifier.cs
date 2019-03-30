@@ -22,6 +22,8 @@ namespace SSMLVerifier
             new ParStrategy(),
             new SeqStrategy(),
             new PStrategy(),
+            new SStrategy(),
+            new SubStrategy(),
             new BreakStrategy(),
             new EmphasisStrategy()
         };

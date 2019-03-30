@@ -60,7 +60,7 @@ namespace SSMLVerifier.TagStrategies
             return null;
         }
 
-        protected VerificationResult HasOnlySpecificAttributes(XElement element, string prefix, string[] validAttributeNames)
+        protected VerificationResult VerifyHasOnlySpecificAttributes(XElement element, string prefix, string[] validAttributeNames)
         {
             if (prefix == null)
             {
@@ -109,6 +109,16 @@ namespace SSMLVerifier.TagStrategies
                 return new VerificationResult(
                     VerificationState.ContainerContainsInvalidChilds,
                     $"The attribute {TagName} can only the following elements: {string.Join(",", validTags)}, but there was a {xElement.Name.LocalName}");
+            }
+
+            return null;
+        }
+
+        protected VerificationResult VerifyNoAttributesAllowed(XElement element)
+        {
+            if (element.HasAttributes)
+            {
+                return new VerificationResult(VerificationState.InvalidAttribute, $"The element with the tag {TagName} should not have any attributes.");
             }
 
             return null;

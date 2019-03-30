@@ -6,13 +6,22 @@ using SSMLVerifier.TagStrategies.All;
 namespace SSMLVerifierTests.TagStrategies.All
 {
     [TestClass]
-    public class PStrategyTests
+    public class SubStrategyTests
     {
         [TestMethod]
         public void ReturnValidForValidTag()
         {
-            var element = "<p><p></p></p>".ToXElement();
-            var strategy = new PStrategy();
+            var element = "<sub><p></p></sub>".ToXElement();
+            var strategy = new SubStrategy();
+            var verificationResult = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidForUsingOptionalAlias()
+        {
+            var element = "<sub alias=\"test\"><p></p></sub>".ToXElement();
+            var strategy = new SubStrategy();
             var verificationResult = strategy.Verify(element);
             Assert.AreEqual(VerificationState.Valid, verificationResult.State);
         }
@@ -20,8 +29,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         [TestMethod]
         public void ReturnInvalidvForInvalidAttribute()
         {
-            var element = "<p name=\"test\"></p>".ToXElement();
-            var strategy = new PStrategy();
+            var element = "<sub name=\"test\"></sub>".ToXElement();
+            var strategy = new SubStrategy();
             var verificationResult = strategy.Verify(element);
             Assert.AreEqual(VerificationState.InvalidAttribute, verificationResult.State);
         }

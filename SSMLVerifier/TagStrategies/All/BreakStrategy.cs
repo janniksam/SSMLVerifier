@@ -16,7 +16,7 @@ namespace SSMLVerifier.TagStrategies.All
 
         public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var verificationResult = HasOnlySpecificAttributes(element, null, new []{ "strength", "time" });
+            var verificationResult = VerifyHasOnlySpecificAttributes(element, null, new []{ "strength", "time" });
             if (verificationResult != null)
             {
                 return verificationResult;
