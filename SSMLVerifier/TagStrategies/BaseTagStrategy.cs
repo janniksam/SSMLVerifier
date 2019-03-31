@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies
@@ -25,19 +26,7 @@ namespace SSMLVerifier.TagStrategies
                 throw new ArgumentNullException(nameof(attributeName));
             }
 
-            var xAttributes = element.Attributes();
-            XAttribute attribute;
-            if (prefix == null)
-            {
-                attribute = xAttributes.SingleOrDefault(p => p.Name.LocalName == attributeName);
-            }
-            else
-            {
-                var namespaceOfPrefix = element.GetNamespaceOfPrefix(prefix);
-                attribute = xAttributes.SingleOrDefault(p => p.Name.LocalName == attributeName &&
-                                                             p.Name.Namespace == namespaceOfPrefix);
-            }
-
+            var attribute = GetAttribute(element, attributeName, prefix);
             if (attribute == null && optional)
             {
                 return null;
@@ -57,6 +46,24 @@ namespace SSMLVerifier.TagStrategies
             }
 
             return null;
+        }
+
+        private static XAttribute GetAttribute(XElement element, string attributeName, string prefix)
+        {
+            var xAttributes = element.Attributes();
+            XAttribute attribute;
+            if (prefix == null)
+            {
+                attribute = xAttributes.SingleOrDefault(p => p.Name.LocalName == attributeName);
+            }
+            else
+            {
+                var namespaceOfPrefix = element.GetNamespaceOfPrefix(prefix);
+                attribute = xAttributes.SingleOrDefault(p => p.Name.LocalName == attributeName &&
+                                                             p.Name.Namespace == namespaceOfPrefix);
+            }
+
+            return attribute;
         }
 
         protected VerificationResult VerifyHasOnlySpecificAttributes(XElement element, string prefix, string[] validAttributeNames)
@@ -133,6 +140,20 @@ namespace SSMLVerifier.TagStrategies
 
             return null;
         }
+
+        protected VerificationResult VerifyMatchesRegEx(XAttribute attribute, string regularExpression)
+        {
+            var regex = new Regex(regularExpression);
+            if (regex.IsMatch(attribute.Value))
+            {
+                return VerificationResult.Valid;
+            }
+
+            return new VerificationResult(VerificationState.InvalidAttributeValue,
+                $"The element {TagName} does include a {attribute.Name.LocalName}-attribute, but the value {attribute.Value} is invalid.\r\n" +
+                $"The value has to match the regular expression: \"{regularExpression}\"");
+        }
+
 
         private VerificationResult CreateInvalidAttributeValueResult(XAttribute attribute, IEnumerable<string> validAttributes)
         {

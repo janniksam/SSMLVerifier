@@ -27,7 +27,8 @@ namespace SSMLVerifier
             new SStrategy(),
             new SubStrategy(),
             new BreakStrategy(),
-            new EmphasisStrategy()
+            new EmphasisStrategy(),
+            new AudioStrategy()
         };
 
         /// <summary>
