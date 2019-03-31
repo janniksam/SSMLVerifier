@@ -14,7 +14,7 @@ namespace SSMLVerifier.TagStrategies
 
         protected string TagName { get; }
 
-        protected VerificationResult RequiresAttribute(XElement element, string attributeName, string prefix = null, IReadOnlyCollection<string> validValues = null, bool optional = false)
+        protected VerificationResult RequiresAttribute(XElement element, string attributeName, string prefix = null, Func<XAttribute, VerificationResult> attributeValidationFunc = null, bool optional = false)
         {
             if (element == null)
             {
@@ -49,12 +49,11 @@ namespace SSMLVerifier.TagStrategies
                     $"The element {TagName} doesnt include a {attributeName}-attribute");
             }
 
-            if (validValues != null &&
-                !validValues.Contains(attribute.Value))
+            var attributeValidationResult = attributeValidationFunc?.Invoke(attribute);
+            if (attributeValidationResult != null &&
+                attributeValidationResult.State != VerificationState.Valid)
             {
-                return new VerificationResult(VerificationState.InvalidAttributeValue,
-                    $"The element {TagName} does include a {attributeName}-attribute, but the value {attribute.Value} is invalid.\r\n" +
-                    $"Valid values are: \"{string.Join(",", validValues)}\"");
+                return attributeValidationResult;
             }
 
             return null;
@@ -123,6 +122,23 @@ namespace SSMLVerifier.TagStrategies
             }
 
             return null;
+        }
+
+        protected VerificationResult VerifyValues(XAttribute attribute, IReadOnlyCollection<string> validValues)
+        {
+            if (!validValues.Contains(attribute.Value))
+            {
+                return CreateInvalidAttributeValueResult(attribute, validValues);
+            }
+
+            return null;
+        }
+
+        private VerificationResult CreateInvalidAttributeValueResult(XAttribute attribute, IEnumerable<string> validAttributes)
+        {
+            return new VerificationResult(VerificationState.InvalidAttributeValue,
+                $"The element {TagName} does include a {attribute.Name.LocalName}-attribute, but the value {attribute.Value} is invalid.\r\n" +
+                $"Valid values are: \"{string.Join(",", validAttributes)}\"");
         }
 
         public virtual bool IsResponsibleFor(string tag)

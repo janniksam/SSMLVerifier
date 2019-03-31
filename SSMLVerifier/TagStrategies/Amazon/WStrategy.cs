@@ -15,7 +15,7 @@ namespace SSMLVerifier.TagStrategies.Amazon
 
         public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var verificationResult = RequiresAttribute(element, "role", null, m_validRoles);
+            var verificationResult = RequiresAttribute(element, "role", null, a => VerifyValues(a, m_validRoles));
             if (verificationResult != null)
             {
                 return verificationResult;

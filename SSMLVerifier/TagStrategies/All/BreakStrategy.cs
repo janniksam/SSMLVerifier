@@ -5,6 +5,9 @@ namespace SSMLVerifier.TagStrategies.All
 {
     public class BreakStrategy : BaseTagStrategy
     {
+        private const string AttributeNameStrength = "strength";
+        private const string AttributeNameTime = "time";
+
         private static readonly string[] m_validStrenghts =
         {
             "none", "x-weak", "weak", "medium", "strong", "x-strong"
@@ -16,19 +19,20 @@ namespace SSMLVerifier.TagStrategies.All
 
         public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var verificationResult = VerifyHasOnlySpecificAttributes(element, null, new []{ "strength", "time" });
+            var verificationResult =
+                VerifyHasOnlySpecificAttributes(element, null, new[] {AttributeNameStrength, AttributeNameTime});
             if (verificationResult != null)
             {
                 return verificationResult;
             }
 
-            verificationResult = RequiresAttribute(element, "strength", null, m_validStrenghts, true);
+            verificationResult = RequiresAttribute(element, AttributeNameStrength, null, a => VerifyValues(a, m_validStrenghts), true);
             if (verificationResult != null)
             {
                 return verificationResult;
             }
 
-            verificationResult = RequiresAttribute(element, "time", optional: true);
+            verificationResult = RequiresAttribute(element, AttributeNameTime, optional: true);
             if (verificationResult != null)
             {
                 return verificationResult;

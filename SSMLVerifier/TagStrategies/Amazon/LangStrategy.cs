@@ -15,7 +15,7 @@ namespace SSMLVerifier.TagStrategies.Amazon
 
         public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var verificationResult = RequiresAttribute(element, "lang", "xml", m_validLocales);
+            var verificationResult = RequiresAttribute(element, "lang", "xml", a => VerifyValues(a, m_validLocales));
             if (verificationResult != null)
             {
                 return verificationResult;
