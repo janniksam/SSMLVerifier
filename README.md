@@ -42,7 +42,7 @@ This is a WIP project. Here is the current state of the implementation:
 The basic usage looks like this:
 
 ```cs
-const string testSsml = "<speak>Hello <lang xml:lang='de-DE'>Welt</lang></speak>";
+const string testSsml = "<speak>Hello <break strength='weak' time='1s'/> World!</speak>";
 var verifier = new Verifer();
 var result = verifier.Verify(testSsml);
 if(result.State == VerificationState.Valid)
@@ -63,9 +63,10 @@ verifier.Verify(testSsml, SsmlPlatform.Amazon);
 verifier.Verify(testSsml, SsmlPlatform.Google);
 ```
 
-This way the only tags are valid, that will work on the set platform.
+This way you are able to use platform specific tags like Amazon's `lang`-tag
 
 ```cs
+// lang is an amazon-specific tag
 const string testSsml = "<speak>Hello <lang xml:lang='de-DE'>Welt</lang></speak>";
 var verifier = new Verifer();
 // this will fail, because lang is a Amazon-specific tag
