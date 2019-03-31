@@ -4,7 +4,7 @@ namespace SSMLVerifier.TagStrategies.All
 {
     public class AudioStrategy : BaseTagStrategy
     {
-        private const string RegularExpressionSoundLevel = "^[+-]([0-9]|[1-3][0-9]|40)dB$";
+        private const string RegularExpressionSoundLevel = "^[+-](([0-9](\\.\\d{1,2})?)|([1-3][0-9](\\.\\d{1,2})?)|40)dB$";
         private const string RegularExpressionSpeed = "^\\d+%$";
         private const string RegularExpressionRepeatCount = "^(\\+)?[0-9]+(\\.[0-9]+)?$";
 
