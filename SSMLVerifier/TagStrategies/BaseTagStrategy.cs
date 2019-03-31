@@ -46,14 +46,14 @@ namespace SSMLVerifier.TagStrategies
             if (attribute == null)
             {
                 return new VerificationResult(VerificationState.MissingAttribute,
-                    $"The tag {TagName} doesnt include a {attributeName}-attribute");
+                    $"The element {TagName} doesnt include a {attributeName}-attribute");
             }
 
             if (validValues != null &&
                 !validValues.Contains(attribute.Value))
             {
                 return new VerificationResult(VerificationState.InvalidAttributeValue,
-                    $"The tag {TagName} does include a {attributeName}-attribute, but the value {attribute.Value} is invalid.\r\n" +
+                    $"The element {TagName} does include a {attributeName}-attribute, but the value {attribute.Value} is invalid.\r\n" +
                     $"Valid values are: \"{string.Join(",", validValues)}\"");
             }
 
@@ -73,7 +73,7 @@ namespace SSMLVerifier.TagStrategies
 
                     return new VerificationResult(
                         VerificationState.InvalidAttribute,
-                        $"The attribute {TagName} can only have the following attributes: {string.Join(",", validAttributeNames)}, but there was a {xAttribute.Name.LocalName}");
+                        $"The element {TagName} can only have the following attributes: {string.Join(",", validAttributeNames)}, but there was a {xAttribute.Name.LocalName}");
                 }
             }
             else
@@ -89,7 +89,7 @@ namespace SSMLVerifier.TagStrategies
 
                     return new VerificationResult(
                         VerificationState.InvalidAttribute,
-                        $"The attribute {TagName} can only have the following attributes: {string.Join(",", validAttributeNames)}, but there was a {xAttribute.Name.LocalName}");
+                        $"The element {TagName} can only have the following attributes: {string.Join(",", validAttributeNames)}, but there was a {xAttribute.Name.LocalName}");
                 }
             }
 
@@ -108,7 +108,7 @@ namespace SSMLVerifier.TagStrategies
 
                 return new VerificationResult(
                     VerificationState.ContainerContainsInvalidChilds,
-                    $"The attribute {TagName} can only the following elements: {string.Join(",", validTags)}, but there was a {xElement.Name.LocalName}");
+                    $"The element {TagName} can only contain the following elements: {string.Join(",", validTags)}, but there was a {xElement.Name.LocalName}");
             }
 
             return null;
@@ -118,7 +118,8 @@ namespace SSMLVerifier.TagStrategies
         {
             if (element.HasAttributes)
             {
-                return new VerificationResult(VerificationState.InvalidAttribute, $"The element with the tag {TagName} should not have any attributes.");
+                return new VerificationResult(VerificationState.InvalidAttribute,
+                    $"The element with the name {TagName} should not have any attributes.");
             }
 
             return null;
