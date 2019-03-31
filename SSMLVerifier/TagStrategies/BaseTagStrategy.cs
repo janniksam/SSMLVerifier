@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies
@@ -14,7 +15,7 @@ namespace SSMLVerifier.TagStrategies
 
         protected string TagName { get; }
 
-        protected VerificationResult RequiresAttribute(XElement element, string attributeName, string prefix = null, IReadOnlyCollection<string> validValues = null, bool optional = false)
+        protected VerificationResult RequiresAttribute(XElement element, string attributeName, string prefix = null, Func<XAttribute, VerificationResult> attributeValidationFunc = null, bool optional = false)
         {
             if (element == null)
             {
@@ -25,6 +26,30 @@ namespace SSMLVerifier.TagStrategies
                 throw new ArgumentNullException(nameof(attributeName));
             }
 
+            var attribute = GetAttribute(element, attributeName, prefix);
+            if (attribute == null && optional)
+            {
+                return null;
+            }
+
+            if (attribute == null)
+            {
+                return new VerificationResult(VerificationState.MissingAttribute,
+                    $"The element {TagName} doesnt include a {attributeName}-attribute");
+            }
+
+            var attributeValidationResult = attributeValidationFunc?.Invoke(attribute);
+            if (attributeValidationResult != null &&
+                attributeValidationResult.State != VerificationState.Valid)
+            {
+                return attributeValidationResult;
+            }
+
+            return null;
+        }
+
+        private static XAttribute GetAttribute(XElement element, string attributeName, string prefix)
+        {
             var xAttributes = element.Attributes();
             XAttribute attribute;
             if (prefix == null)
@@ -38,26 +63,7 @@ namespace SSMLVerifier.TagStrategies
                                                              p.Name.Namespace == namespaceOfPrefix);
             }
 
-            if (attribute == null && optional)
-            {
-                return null;
-            }
-
-            if (attribute == null)
-            {
-                return new VerificationResult(VerificationState.MissingAttribute,
-                    $"The tag {TagName} doesnt include a {attributeName}-attribute");
-            }
-
-            if (validValues != null &&
-                !validValues.Contains(attribute.Value))
-            {
-                return new VerificationResult(VerificationState.InvalidAttributeValue,
-                    $"The tag {TagName} does include a {attributeName}-attribute, but the value {attribute.Value} is invalid.\r\n" +
-                    $"Valid values are: \"{string.Join(",", validValues)}\"");
-            }
-
-            return null;
+            return attribute;
         }
 
         protected VerificationResult VerifyHasOnlySpecificAttributes(XElement element, string prefix, string[] validAttributeNames)
@@ -73,7 +79,7 @@ namespace SSMLVerifier.TagStrategies
 
                     return new VerificationResult(
                         VerificationState.InvalidAttribute,
-                        $"The attribute {TagName} can only have the following attributes: {string.Join(",", validAttributeNames)}, but there was a {xAttribute.Name.LocalName}");
+                        $"The element {TagName} can only have the following attributes: {string.Join(",", validAttributeNames)}, but there was a {xAttribute.Name.LocalName}");
                 }
             }
             else
@@ -89,7 +95,7 @@ namespace SSMLVerifier.TagStrategies
 
                     return new VerificationResult(
                         VerificationState.InvalidAttribute,
-                        $"The attribute {TagName} can only have the following attributes: {string.Join(",", validAttributeNames)}, but there was a {xAttribute.Name.LocalName}");
+                        $"The element {TagName} can only have the following attributes: {string.Join(",", validAttributeNames)}, but there was a {xAttribute.Name.LocalName}");
                 }
             }
 
@@ -108,7 +114,7 @@ namespace SSMLVerifier.TagStrategies
 
                 return new VerificationResult(
                     VerificationState.ContainerContainsInvalidChilds,
-                    $"The attribute {TagName} can only the following elements: {string.Join(",", validTags)}, but there was a {xElement.Name.LocalName}");
+                    $"The element {TagName} can only contain the following elements: {string.Join(",", validTags)}, but there was a {xElement.Name.LocalName}");
             }
 
             return null;
@@ -118,10 +124,42 @@ namespace SSMLVerifier.TagStrategies
         {
             if (element.HasAttributes)
             {
-                return new VerificationResult(VerificationState.InvalidAttribute, $"The element with the tag {TagName} should not have any attributes.");
+                return new VerificationResult(VerificationState.InvalidAttribute,
+                    $"The element with the name {TagName} should not have any attributes.");
             }
 
             return null;
+        }
+
+        protected VerificationResult VerifyValues(XAttribute attribute, IReadOnlyCollection<string> validValues)
+        {
+            if (!validValues.Contains(attribute.Value))
+            {
+                return CreateInvalidAttributeValueResult(attribute, validValues);
+            }
+
+            return null;
+        }
+
+        protected VerificationResult VerifyMatchesRegEx(XAttribute attribute, string regularExpression)
+        {
+            var regex = new Regex(regularExpression);
+            if (regex.IsMatch(attribute.Value))
+            {
+                return VerificationResult.Valid;
+            }
+
+            return new VerificationResult(VerificationState.InvalidAttributeValue,
+                $"The element {TagName} does include a {attribute.Name.LocalName}-attribute, but the value {attribute.Value} is invalid.\r\n" +
+                $"The value has to match the regular expression: \"{regularExpression}\"");
+        }
+
+
+        private VerificationResult CreateInvalidAttributeValueResult(XAttribute attribute, IEnumerable<string> validAttributes)
+        {
+            return new VerificationResult(VerificationState.InvalidAttributeValue,
+                $"The element {TagName} does include a {attribute.Name.LocalName}-attribute, but the value {attribute.Value} is invalid.\r\n" +
+                $"Valid values are: \"{string.Join(",", validAttributes)}\"");
         }
 
         public virtual bool IsResponsibleFor(string tag)

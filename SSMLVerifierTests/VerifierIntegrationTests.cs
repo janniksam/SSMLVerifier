@@ -5,7 +5,7 @@ using SSMLVerifier;
 namespace SSMLVerifierTests
 {
     [TestClass]
-    public class VerifierTests
+    public class VerifierIntegrationTests
     {
         private Verifier m_verifier;
 
@@ -25,7 +25,7 @@ namespace SSMLVerifierTests
         }
 
         [TestMethod]
-        public void ShouldReturnValidWithOnlyAnInvalidTag()
+        public void ShouldReturnValidWithAnInvalidRoot()
         {
             const string testSsml = "<invalidTag></invalidTag>";
 
@@ -36,7 +36,7 @@ namespace SSMLVerifierTests
         [TestMethod]
         public void ShouldReturnValidWithOnlyAnInvalidPlatformSpecificTag()
         {
-            const string testSsml = "<lang></lang>";
+            const string testSsml = "<speak><lang xml:lang='de-DE'></lang></speak>";
 
             var verify = m_verifier.Verify(testSsml, SsmlPlatform.Google);
             Assert.AreEqual(VerificationState.InvalidTag, verify.State);
@@ -45,7 +45,7 @@ namespace SSMLVerifierTests
         [TestMethod]
         public void ShouldReturnValidWithOnlyAValidPlatformSpecificTag()
         {
-            const string testSsml = "<lang xml:lang='de-DE'></lang>";
+            const string testSsml = "<speak><lang xml:lang='de-DE'></lang></speak>";
 
             var verify = m_verifier.Verify(testSsml, SsmlPlatform.Amazon);
             Assert.AreEqual(VerificationState.Valid, verify.State);
@@ -53,7 +53,7 @@ namespace SSMLVerifierTests
 
         [TestMethod]
         [ExpectedException(typeof(XmlException))]
-        public void ShouldReturnInvalidWithMalformedXml2()
+        public void ShouldReturnInvalidWithMalformedXml()
         {
             const string testSsml = "<speaks></speak>";
             m_verifier.Verify(testSsml);
@@ -61,7 +61,7 @@ namespace SSMLVerifierTests
 
         [TestMethod]
         [ExpectedException(typeof(XmlException))]
-        public void ShouldReturnInvalidWithMalformedXml()
+        public void ShouldReturnInvalidWithMalformedXml2()
         {
             const string testSsml = "speak>/speak>";
             m_verifier.Verify(testSsml);

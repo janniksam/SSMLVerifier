@@ -5,6 +5,8 @@ namespace SSMLVerifier.TagStrategies.All
 {
     public class EmphasisStrategy : BaseTagStrategy
     {
+        private const string AttributeNameLevel = "level";
+
         private readonly List<string> m_validLevels = new List<string>
         {
             "strong", "moderate", "reduced"
@@ -21,7 +23,7 @@ namespace SSMLVerifier.TagStrategies.All
                 m_validLevels.Add("none");
             }
 
-            var verificationResult = RequiresAttribute(element, "level", null, m_validLevels);
+            var verificationResult = RequiresAttribute(element, AttributeNameLevel, null, a => VerifyValues(a, m_validLevels));
             if (verificationResult != null)
             {
                 return verificationResult;
