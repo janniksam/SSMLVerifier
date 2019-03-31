@@ -13,7 +13,7 @@ This is a WIP project. Here is the current state of the implementation:
 
 #### Common tags:
 
-- ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) audio 
+- ![#ffe900](https://placehold.it/15/ffe900/000000?text=+) audio - <i><b>todo:</b> repeatDur, clipBegin and clipEnd need to be validated</i>
 - ![#ffe900](https://placehold.it/15/ffe900/000000?text=+) break - <i><b>todo:</b> time attribute needs to be validated</i>
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) emphasis 
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) p 
