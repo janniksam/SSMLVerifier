@@ -18,7 +18,7 @@ namespace SSMLVerifierTests.TagStrategies.All
         }
 
         [TestMethod]
-        public void ReturnInvalidvForInvalidAttribute()
+        public void ReturnInvalidForInvalidAttribute()
         {
             var element = "<p name=\"test\"></p>".ToXElement();
             var strategy = new PStrategy();

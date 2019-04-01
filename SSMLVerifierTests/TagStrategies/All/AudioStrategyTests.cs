@@ -91,7 +91,7 @@ namespace SSMLVerifierTests.TagStrategies.All
         }
 
         [TestMethod]
-        public void ReturnValidForInvalidSoundLevel()
+        public void ReturnInvalidForInvalidSoundLevel()
         {
             var element = "<audio clipBegin=\"3s\" soundLevel=\"+40dBs\" src=\"http://test.com/test.mp3\" />".ToXElement();
             var strategy = new AudioStrategy();
@@ -115,6 +115,33 @@ namespace SSMLVerifierTests.TagStrategies.All
             var strategy = new AudioStrategy();
             var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
             Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnInvalidForInvalidSoundLevelTooMuchDecimals()
+        {
+            var element = "<audio clipBegin=\"3s\" soundLevel=\"+30.003dB\" src=\"http://test.com/test.mp3\" />".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidForSoundLevelWith2Decimals()
+        {
+            var element = "<audio clipBegin=\"3s\" soundLevel=\"+30.03dB\" src=\"http://test.com/test.mp3\" />".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidForSoundLevelWith1Decimals()
+        {
+            var element = "<audio clipBegin=\"3s\" soundLevel=\"+30.3dB\" src=\"http://test.com/test.mp3\" />".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
         }
     }
 }

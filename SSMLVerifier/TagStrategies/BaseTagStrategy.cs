@@ -66,7 +66,7 @@ namespace SSMLVerifier.TagStrategies
             return attribute;
         }
 
-        protected VerificationResult VerifyHasOnlySpecificAttributes(XElement element, string prefix, string[] validAttributeNames)
+        protected VerificationResult VerifyHasOnlySpecificAttributes(XElement element, string prefix, IReadOnlyCollection<string> validAttributeNames)
         {
             if (prefix == null)
             {
