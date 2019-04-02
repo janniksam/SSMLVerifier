@@ -36,7 +36,7 @@ This is a WIP project. Here is the current state of the implementation:
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) par
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) seq
 - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) media
-- ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) desc
+- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) desc
 
 ## Basic usage
 

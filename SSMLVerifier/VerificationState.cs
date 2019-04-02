@@ -7,6 +7,7 @@
         MissingAttribute = -2,
         InvalidAttributeValue = -3,
         ContainerContainsInvalidChilds = -4,
-        InvalidAttribute = -5
+        InvalidAttribute = -5,
+        InvalidParent = -6,
     }
 }
