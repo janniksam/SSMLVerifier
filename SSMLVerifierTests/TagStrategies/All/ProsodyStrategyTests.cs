@@ -20,7 +20,7 @@ namespace SSMLVerifierTests.TagStrategies.All
         [TestMethod]
         public void ReturnValidForValidTagRateInPercent()
         {
-            var element = "<prosody rate=\"23.45%\">I am slow</prosody>.".ToXElement();
+            var element = "<prosody rate=\"23%\">I am slow</prosody>.".ToXElement();
             var strategy = new ProsodyStrategy();
             var verificationResult = strategy.Verify(element);
             Assert.AreEqual(VerificationState.Valid, verificationResult.State);
