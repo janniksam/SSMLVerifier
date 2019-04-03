@@ -19,6 +19,7 @@ namespace SSMLVerifier
             new AudioStrategy(),
             new BreakStrategy(),
             new EmphasisStrategy(),
+            new ProsodyStrategy(),
             new PStrategy(),
             new SayAsStrategy(),
             new SStrategy(),
