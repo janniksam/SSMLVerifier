@@ -141,6 +141,16 @@ namespace SSMLVerifier.TagStrategies
             return null;
         }
 
+        protected VerificationResult VerifyHasValidParent(XObject element, string validParent)
+        {
+            if (element.Parent == null || element.Parent.Name.LocalName != validParent)
+            {
+                return new VerificationResult(VerificationState.InvalidParent, $"The element {TagName} can only be used inside an {validParent} element.");
+            }
+
+            return null;
+        }
+
         protected VerificationResult VerifyMatchesRegEx(XAttribute attribute, string regularExpression)
         {
             var regex = new Regex(regularExpression);

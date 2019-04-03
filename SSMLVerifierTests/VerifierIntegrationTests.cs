@@ -25,6 +25,15 @@ namespace SSMLVerifierTests
         }
 
         [TestMethod]
+        public void ShouldReturnValidWithDesc()
+        {
+            const string testSsml = "<speak>Hello <audio src=\"test\"><desc>Description here</desc></audio></speak>";
+
+            var verify = m_verifier.Verify(testSsml, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verify.State);
+        }
+
+        [TestMethod]
         public void ShouldReturnValidWithAnInvalidRoot()
         {
             const string testSsml = "<invalidTag></invalidTag>";

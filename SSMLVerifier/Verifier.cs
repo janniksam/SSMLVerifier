@@ -16,19 +16,24 @@ namespace SSMLVerifier
 
         private readonly List<ITagStrategy> m_strategies = new List<ITagStrategy>
         {
+            new AudioStrategy(),
+            new BreakStrategy(),
+            new EmphasisStrategy(),
+            new ProsodyStrategy(),
+            new PStrategy(),
+            new SayAsStrategy(),
+            new SStrategy(),
+            new SubStrategy(),
+            //Amazon
             new AmazonEffectStrategy(),
             new LangStrategy(),
             new PhonemeStrategy(),
             new VoiceStrategy(),
             new WStrategy(),
+            //Google
+            new DescStrategy(),
             new ParStrategy(),
-            new SeqStrategy(),
-            new PStrategy(),
-            new SStrategy(),
-            new SubStrategy(),
-            new BreakStrategy(),
-            new EmphasisStrategy(),
-            new AudioStrategy()
+            new SeqStrategy()
         };
 
         /// <summary>
@@ -141,7 +146,7 @@ namespace SSMLVerifier
             {
                 validTags.AddRange(new[]
                 {
-                    "par", "seq", "media"
+                    "par", "seq", "media", "desc"
                 });
             }
 
