@@ -10,7 +10,7 @@ namespace SSMLVerifier.TagStrategies.All
         private const string AttributeNameVolume = "volume";
 
         private readonly string[] m_validRates = {"x-slow", "slow", "medium", "fast", "x-fast"};
-        private const string RegExRate = "^([2-8][0-9]|9[0-9]|1[0-9]{2}|200)%$";
+        private readonly string m_regExRate;
 
         private readonly string[] m_validPitches = {"x-low", "low", "medium", "high", "x-high"};
         private readonly string m_regExPitch;
@@ -21,6 +21,7 @@ namespace SSMLVerifier.TagStrategies.All
 
         public ProsodyStrategy() : base("prosody")
         {
+            m_regExRate = $"^(([2-8][0-9]|9[0-9]|1[0-9]{{2}}|200)%)|{string.Join("|", m_validRates)}$";
             m_regExPitch = $"^(([+-]\\d+)(\\.\\d{{1,2}})?%)|{string.Join("|", m_validPitches)}$";
             m_regExVolume = $"^([+-]\\d+(\\.\\d+)?dB)|{string.Join("|", m_validVolumes)}$";
         }
@@ -35,7 +36,8 @@ namespace SSMLVerifier.TagStrategies.All
                 return verificationResult;
             }
 
-            verificationResult = RequiresAttribute(element, AttributeNameRate, null, VerifyRate, true);
+            verificationResult = RequiresAttribute(element, AttributeNameRate, null,
+                a => VerifyMatchesRegEx(a, m_regExRate), true);
             if (verificationResult != null)
             {
                 return verificationResult;
@@ -55,29 +57,7 @@ namespace SSMLVerifier.TagStrategies.All
                 return verificationResult;
             }
 
-            // todo: Check time format
-
             return VerificationResult.Valid;
-        }
-
-        private VerificationResult VerifyRate(XAttribute attribute)
-        {
-            if (m_validRates.Any(p => p == attribute.Value))
-            {
-                return VerificationResult.Valid;
-            }
-
-            return VerifyMatchesRegEx(attribute, RegExRate);
-        }
-
-        private VerificationResult VerifyPitch(XAttribute attribute)
-        {
-            if (m_validPitches.Any(p => p == attribute.Value))
-            {
-                return VerificationResult.Valid;
-            }
-
-            return VerifyMatchesRegEx(attribute, m_regExPitch);
         }
     }
 }
