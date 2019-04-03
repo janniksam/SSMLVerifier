@@ -63,6 +63,15 @@ namespace SSMLVerifierTests.TagStrategies.All
         }
 
         [TestMethod]
+        public void ReturnValidForValidTagPitchInSemitones()
+        {
+            var element = "<prosody pitch=\"+2st\">I am low pitched</prosody>.".ToXElement();
+            var strategy = new ProsodyStrategy();
+            var verificationResult = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
         public void ReturnInvalidForInvalidAttribute()
         {
             var element = "<prosody name=\"test\"></prosody>".ToXElement();

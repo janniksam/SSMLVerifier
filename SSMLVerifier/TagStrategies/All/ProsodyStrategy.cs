@@ -22,7 +22,7 @@ namespace SSMLVerifier.TagStrategies.All
         public ProsodyStrategy() : base("prosody")
         {
             m_regExRate = $"^(([2-8][0-9]|9[0-9]|1[0-9]{{2}}|200)%)|{string.Join("|", m_validRates)}$";
-            m_regExPitch = $"^(([+-]\\d+)(\\.\\d{{1,2}})?%)|{string.Join("|", m_validPitches)}$";
+            m_regExPitch = $"^(([+-]\\d+)(\\.\\d{{1,2}})?%)|([+-]\\d+st)|{string.Join("|", m_validPitches)}$";
             m_regExVolume = $"^([+-]\\d+(\\.\\d+)?dB)|{string.Join("|", m_validVolumes)}$";
         }
 
