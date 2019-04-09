@@ -32,6 +32,7 @@ namespace SSMLVerifier
             new WStrategy(),
             //Google
             new DescStrategy(),
+            new MediaStrategy(),
             new ParStrategy(),
             new SeqStrategy()
         };

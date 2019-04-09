@@ -164,6 +164,18 @@ namespace SSMLVerifier.TagStrategies
                 $"The value has to match the regular expression: \"{regularExpression}\"");
         }
 
+        protected VerificationResult VerifyTimeDesignation(XAttribute attribute)
+        {
+            var verificationResult = VerifyMatchesRegEx(attribute, "^[+-]?\\d+(\\.\\d+)?(h|min|s|ms)$");
+            if (verificationResult.State == VerificationState.Valid)
+            {
+                return null;
+            }
+
+            return VerifyMatchesRegEx(attribute,
+                "^([-_#]|[a-z]|[A-Z]|ß|ö|ä|ü|Ö|Ä|Ü|æ|é|[0-9])+\\.(begin|end)[+-][0-9]+(\\.[0-9]+)?(h|min|s|ms)$");
+        }
+
 
         private VerificationResult CreateInvalidAttributeValueResult(XAttribute attribute, IEnumerable<string> validAttributes)
         {
