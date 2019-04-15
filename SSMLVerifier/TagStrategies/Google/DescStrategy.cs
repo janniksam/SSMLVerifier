@@ -6,7 +6,7 @@ namespace SSMLVerifier.TagStrategies.Google
     {
         private const string TagNameAudio = "audio";
 
-        public DescStrategy() : base("desc")
+        public DescStrategy() : base("desc", SsmlPlatform.Google)
         {
         }
 

@@ -8,7 +8,7 @@ namespace SSMLVerifier.TagStrategies.All
         private const string RegularExpressionSpeed = "^\\d+%$";
         private const string RegularExpressionRepeatCount = "^[+]?\\d+(\\.\\d+)?$";
 
-        public AudioStrategy() : base("audio")
+        public AudioStrategy() : base("audio", SsmlPlatform.All)
         {
         }
 

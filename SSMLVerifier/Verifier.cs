@@ -91,67 +91,30 @@ namespace SSMLVerifier
 
         private VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var validTags = GetValidTags(platform);
-            if (!validTags.Contains(element.Name.LocalName))
+            var tagStrategy = m_strategies.FirstOrDefault(
+                p => p.IsResponsibleFor(element.Name.LocalName) &&
+                     p.IsValidForPlatform(platform));
+            if (tagStrategy == null)
             {
                 return new VerificationResult(VerificationState.InvalidTag, $"Invalid tag {element.Name.LocalName}");
             }
 
-            var tagStrategy = m_strategies.FirstOrDefault(p => p.IsResponsibleFor(element.Name.LocalName));
-            if (tagStrategy != null)
+            var verificationResult = tagStrategy.Verify(element, platform);
+            if (verificationResult?.State != VerificationState.Valid)
             {
-                var verificationResult = tagStrategy.Verify(element, platform);
-                if (verificationResult?.State != VerificationState.Valid)
-                {
-                    return verificationResult;
-                }
+                return verificationResult;
             }
 
             foreach (var childElement in element.Elements())
             {
-                var verificationResult = Verify(childElement, platform);
-                if (verificationResult?.State != VerificationState.Valid)
+                var childVerificationResult = Verify(childElement, platform);
+                if (childVerificationResult?.State != VerificationState.Valid)
                 {
-                    return verificationResult;
+                    return childVerificationResult;
                 }
             }
             
             return VerificationResult.Valid;
-        }
-
-        // todo Make this a responsibility of each strategy instead of deciding it here
-        private static IEnumerable<string> GetValidTags(SsmlPlatform platform)
-        {
-            var validTags = new List<string>
-            {
-                "audio",
-                "break",
-                "emphasis",
-                "p",
-                "prosody",
-                "s",
-                "say-as",
-                "speak",
-                "sub"
-            };
-
-            if (platform == SsmlPlatform.Amazon)
-            {
-                validTags.AddRange(new[]
-                {
-                    "amazon:effect", "lang", "phoneme", "voice", "w"
-                });
-            }
-
-            if (platform == SsmlPlatform.Google)
-            {
-                validTags.AddRange(new[]
-                {
-                    "par", "seq", "media", "desc"
-                });
-            }
-
-            return validTags;
         }
     }
 }

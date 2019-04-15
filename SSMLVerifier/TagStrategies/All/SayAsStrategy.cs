@@ -23,7 +23,7 @@ namespace SSMLVerifier.TagStrategies.All
             "expletive"
         };
 
-        public SayAsStrategy() : base("say-as")
+        public SayAsStrategy() : base("say-as", SsmlPlatform.All)
         {
         }
 

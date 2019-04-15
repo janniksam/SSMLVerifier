@@ -8,12 +8,26 @@ namespace SSMLVerifier.TagStrategies
 {
     public abstract class BaseTagStrategy : ITagStrategy    
     {
-        protected BaseTagStrategy(string tagName)
+        protected BaseTagStrategy(string tagName, SsmlPlatform platform)
         {
+            SupportedPlatform = platform;
             TagName = tagName;
         }
 
+        protected SsmlPlatform SupportedPlatform { get; }
+
         protected string TagName { get; }
+
+        public virtual bool IsValidForPlatform(SsmlPlatform platform)
+        {
+            return SupportedPlatform == SsmlPlatform.All ||
+                   platform == SupportedPlatform;
+        }
+
+        public virtual bool IsResponsibleFor(string tag)
+        {
+            return TagName.Equals(tag);
+        }
 
         protected VerificationResult RequiresAttribute(XElement element, string attributeName, string prefix = null, Func<XAttribute, VerificationResult> attributeValidationFunc = null, bool optional = false)
         {
@@ -182,11 +196,6 @@ namespace SSMLVerifier.TagStrategies
             return new VerificationResult(VerificationState.InvalidAttributeValue,
                 $"The element {TagName} does include a {attribute.Name.LocalName}-attribute, but the value {attribute.Value} is invalid.\r\n" +
                 $"Valid values are: \"{string.Join(",", validAttributes)}\"");
-        }
-
-        public virtual bool IsResponsibleFor(string tag)
-        {
-            return TagName.Equals(tag);
         }
 
         public abstract VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All);

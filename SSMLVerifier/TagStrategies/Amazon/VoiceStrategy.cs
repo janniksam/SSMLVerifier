@@ -12,7 +12,7 @@ namespace SSMLVerifier.TagStrategies.Amazon
             "Carla", "Giorgio", "Mizuki", "Takumi", "Celine", "Lea", "Mathieu"
         };
 
-        public VoiceStrategy() : base("voice")
+        public VoiceStrategy() : base("voice", SsmlPlatform.Amazon)
         {
         }
 

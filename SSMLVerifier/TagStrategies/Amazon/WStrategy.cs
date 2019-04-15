@@ -9,7 +9,7 @@ namespace SSMLVerifier.TagStrategies.Amazon
             "amazon:VB", "amazon:VBD", "amazon:NN", "amazon:SENSE_1"
         };
 
-        public WStrategy() : base("w")
+        public WStrategy() : base("w", SsmlPlatform.Amazon)
         {
         }
 

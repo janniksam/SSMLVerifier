@@ -10,7 +10,7 @@ namespace SSMLVerifier.TagStrategies.Google
         private const string RegularExpressionSoundLevel =
             "^[+-](([0-9](\\.\\d{1,2})?)|([1-3][0-9](\\.\\d{1,2})?)|40)dB$";
 
-        public MediaStrategy() : base("media")
+        public MediaStrategy() : base("media", SsmlPlatform.Google)
         {
         }
 

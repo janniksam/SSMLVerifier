@@ -13,7 +13,7 @@ namespace SSMLVerifier.TagStrategies.All
             "none", "x-weak", "weak", "medium", "strong", "x-strong"
         };
 
-        public BreakStrategy() : base("break")
+        public BreakStrategy() : base("break", SsmlPlatform.All)
         {
         }
 

@@ -10,7 +10,7 @@ namespace SSMLVerifier.TagStrategies.Amazon
             "ipa", "x-sampa"
         };
 
-        public PhonemeStrategy() : base("phoneme")
+        public PhonemeStrategy() : base("phoneme", SsmlPlatform.Amazon)
         {
             
         }

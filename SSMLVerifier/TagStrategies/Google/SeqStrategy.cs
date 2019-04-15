@@ -5,7 +5,7 @@ namespace SSMLVerifier.TagStrategies.Google
 {
     public class SeqStrategy : BaseTagStrategy
     {
-        public SeqStrategy() : base("seq")
+        public SeqStrategy() : base("seq", SsmlPlatform.Google)
         {
         }
 

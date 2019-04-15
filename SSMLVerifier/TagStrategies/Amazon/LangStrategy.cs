@@ -9,7 +9,7 @@ namespace SSMLVerifier.TagStrategies.Amazon
             "en-US", "en-GB", "en-IN", "en-AU", "en-CA", "de-DE", "es-ES", "it-IT", "ja-JP", "fr-FR"
         };
         
-        public LangStrategy() : base("lang")
+        public LangStrategy() : base("lang", SsmlPlatform.Amazon)
         {
         }
 
