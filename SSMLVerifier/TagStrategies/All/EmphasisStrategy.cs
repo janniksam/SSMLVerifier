@@ -13,7 +13,7 @@ namespace SSMLVerifier.TagStrategies.All
             "strong", "moderate", "reduced"
         };
 
-        public EmphasisStrategy() : base("emphasis")
+        public EmphasisStrategy() : base("emphasis", SsmlPlatform.All)
         {
         }
 

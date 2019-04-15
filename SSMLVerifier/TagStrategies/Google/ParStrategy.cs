@@ -6,7 +6,7 @@ namespace SSMLVerifier.TagStrategies.Google
 {
     public class ParStrategy : BaseTagStrategy
     {
-        public ParStrategy() : base("par")
+        public ParStrategy() : base("par", SsmlPlatform.Google)
         {
         }
 

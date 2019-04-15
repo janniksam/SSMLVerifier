@@ -12,7 +12,7 @@ namespace SSMLVerifier.TagStrategies.Amazon
             "whispered"
         };
 
-        public AmazonEffectStrategy() : base("amazon:effect")
+        public AmazonEffectStrategy() : base("amazon:effect", SsmlPlatform.Amazon)
         {
         }
 

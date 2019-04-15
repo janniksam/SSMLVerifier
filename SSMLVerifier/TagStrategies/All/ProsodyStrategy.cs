@@ -19,7 +19,7 @@ namespace SSMLVerifier.TagStrategies.All
         private readonly string m_regExVolume;
 
 
-        public ProsodyStrategy() : base("prosody")
+        public ProsodyStrategy() : base("prosody", SsmlPlatform.All)
         {
             m_regExRate = $"^(([2-8][0-9]|9[0-9]|1[0-9]{{2}}|200)%)|{string.Join("|", m_validRates)}$";
             m_regExPitch = $"^(([+-]\\d+)(\\.\\d{{1,2}})?%)|([+-]\\d+st)|{string.Join("|", m_validPitches)}$";

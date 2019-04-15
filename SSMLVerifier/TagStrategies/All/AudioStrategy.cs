@@ -8,7 +8,7 @@ namespace SSMLVerifier.TagStrategies.All
         private const string RegularExpressionSpeed = "^\\d+%$";
         private const string RegularExpressionRepeatCount = "^[+]?\\d+(\\.\\d+)?$";
 
-        public AudioStrategy() : base("audio")
+        public AudioStrategy() : base("audio", SsmlPlatform.All)
         {
         }
 
@@ -36,15 +36,14 @@ namespace SSMLVerifier.TagStrategies.All
                 return null;
             }
 
-            //todo Time Verification
-            var verificationResult = RequiresAttribute(element, "clipBegin", optional: true);
+            var verificationResult = RequiresAttribute(element, "clipBegin", null, VerifyTimeDesignation, true);
             if (verificationResult != null)
             {
                 return verificationResult;
             }
 
             //todo Time Verification
-            verificationResult = RequiresAttribute(element, "clipEnd", optional: true);
+            verificationResult = RequiresAttribute(element, "clipEnd", null, VerifyTimeDesignation, true);
             if (verificationResult != null)
             {
                 return verificationResult;
@@ -65,7 +64,7 @@ namespace SSMLVerifier.TagStrategies.All
             }
 
             //todo Time Verification
-            verificationResult = RequiresAttribute(element, "repeatDur", optional: true);
+            verificationResult = RequiresAttribute(element, "repeatDur", null, VerifyTimeDesignation, true);
             if (verificationResult != null)
             {
                 return verificationResult;

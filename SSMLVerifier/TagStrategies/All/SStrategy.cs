@@ -4,7 +4,7 @@ namespace SSMLVerifier.TagStrategies.All
 {
     public class SStrategy : BaseTagStrategy
     {
-        public SStrategy() : base("s")
+        public SStrategy() : base("s", SsmlPlatform.All)
         {
         }
 

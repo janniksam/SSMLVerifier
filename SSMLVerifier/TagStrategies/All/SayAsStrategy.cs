@@ -23,7 +23,21 @@ namespace SSMLVerifier.TagStrategies.All
             "expletive"
         };
 
-        public SayAsStrategy() : base("say-as")
+        private readonly IReadOnlyCollection<string> m_validFormatValuesWhenInterpretAsIsDate = new List<string>
+        {
+            "mdy",
+            "dmy",
+            "ymd",
+            "md",
+            "dm",
+            "ym",
+            "my",
+            "d",
+            "m",
+            "y"
+        };
+           
+        public SayAsStrategy() : base("say-as", SsmlPlatform.All)
         {
         }
 
@@ -45,12 +59,6 @@ namespace SSMLVerifier.TagStrategies.All
                 return verificationResult;
             }
 
-            verificationResult = RequiresAttribute(element, AttributeNameFormat, null, optional: true);
-            if (verificationResult != null)
-            {
-                return verificationResult;
-            }
-
             verificationResult = RequiresAttribute(element, AttributeNameDetail,
                 attributeValidationFunc: a => VerifyValues(a, new [] {"1", "2"}), optional: true);
             if (verificationResult != null)
@@ -58,6 +66,11 @@ namespace SSMLVerifier.TagStrategies.All
                 return verificationResult;
             }
 
+            verificationResult = VerifyFormat(element, platform);
+            if (verificationResult != null)
+            {
+                return verificationResult;
+            }
 
             return VerificationResult.Valid;
         }
@@ -99,43 +112,25 @@ namespace SSMLVerifier.TagStrategies.All
             return validValues;
         }
 
-        /*
-         // Attribute must be interpret-as or format
-  attributes.forEach((attribute) => {
-    if (attribute === 'interpret-as') {
-      if (['characters', 'spell-out', 'cardinal', 'ordinal',
-          'fraction', 'unit', 'date', 'time', 'telephone', 'expletive']
-          .indexOf(element.attributes['interpret-as']) === -1) {
-        // Some attributes are platform specific
-        let supported = false;
-        if ((platform === 'amazon') &&
-          ['number', 'digits', 'address', 'interjection']
-          .indexOf(element.attributes['interpret-as'] !== -1)) {
-          supported = true;
-        } else if ((platform === 'google') &&
-          ['bleep', 'verbatim'].indexOf(element.attributes['interpret-as'] !== -1)) {
-          supported = true;
-        }
+        public VerificationResult VerifyFormat(XElement element, SsmlPlatform platform)  
+        {
+            var containsInterpretAsWithDateValue = RequiresAttribute(element, AttributeNameInterpretAs, null, a => VerifyValues(a, new[] {"date"})) == null;
+            if (containsInterpretAsWithDateValue)
+            {
+                return RequiresAttribute(element, AttributeNameFormat, null, a => VerifyValues(a, m_validFormatValuesWhenInterpretAsIsDate));
+            }
 
-        if (!supported) {
-          errors.push(createTagError(element, attribute));
+            if (platform == SsmlPlatform.Google)
+            {
+                return RequiresAttribute(element, AttributeNameFormat, null,
+                    a => VerifyMatchesRegEx(a, "^[hmsZ^\\s.!?:;(12|24)]*$"));
+            }
+
+            return RequiresAttribute(element, AttributeNameFormat, null,
+                a => new VerificationResult(VerificationState.InvalidAttribute,
+                    //It doesn't matter what value the attribute has, it's not allowed when interpret-as != date...
+                    $"The element {AttributeNameFormat} can only be used, when the \"{AttributeNameInterpretAs}\"-attribute is set to \"date\""),
+                true);
         }
-      }
-    } else if (attribute === 'format') {
-      if (['mdy', 'dmy', 'ymd', 'md', 'dm', 'ym',
-          'my', 'd', 'm', 'y'].indexOf(element.attributes.format) === -1) {
-        errors.push(createTagError(element, attribute));
-      }
-    } else if ((platform === 'google') && (attribute === 'detail')) {
-      if (['1', '2'].indexOf(element.attributes.detail) === -1) {
-        errors.push(createTagError(element, attribute));
-      }
-    } else {
-      // Invalid attribute
-      errors.push(createTagError(element, attribute, true));
-    }
-  });
-break;
-         */
     }
 }

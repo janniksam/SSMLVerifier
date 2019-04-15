@@ -13,7 +13,7 @@ namespace SSMLVerifier.TagStrategies.All
             "none", "x-weak", "weak", "medium", "strong", "x-strong"
         };
 
-        public BreakStrategy() : base("break")
+        public BreakStrategy() : base("break", SsmlPlatform.All)
         {
         }
 
@@ -32,13 +32,11 @@ namespace SSMLVerifier.TagStrategies.All
                 return verificationResult;
             }
 
-            verificationResult = RequiresAttribute(element, AttributeNameTime, optional: true);
+            verificationResult = RequiresAttribute(element, AttributeNameTime, null, VerifyTimeDesignation, true);
             if (verificationResult != null)
             {
                 return verificationResult;
             }
-
-            // todo: Check time format
 
             return VerificationResult.Valid;
         }

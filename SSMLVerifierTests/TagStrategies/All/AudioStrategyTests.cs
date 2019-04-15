@@ -143,5 +143,113 @@ namespace SSMLVerifierTests.TagStrategies.All
             var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
             Assert.AreEqual(VerificationState.Valid, verificationResult.State);
         }
+
+        [TestMethod]
+        public void ReturnValidWithValidClipBegin()
+        {
+            var element = "<audio src=\"http://test.com/test.mp3\" clipBegin=\"300.92ms\"/>".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnInvalidWithInvalidClipBeginComma()
+        {
+            var element = "<audio src=\"http://test.com/test.mp3\" clipBegin=\"300,92ms\"/>".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidWithClipBeginPlusValue()
+        {
+            var element = "<audio src=\"http://test.com/test.mp3\" clipBegin=\"+30ms\"/>".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidWithClipBeginMinusValue()
+        {
+            var element = "<audio src=\"http://test.com/test.mp3\" clipBegin=\"-30ms\"/>".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidWithValidClipEnd()
+        {
+            var element = "<audio src=\"http://test.com/test.mp3\" clipEnd=\"300.92ms\"/>".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnInvalidWithInvalidClipEndComma()
+        {
+            var element = "<audio src=\"http://test.com/test.mp3\" clipEnd=\"300,92ms\"/>".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidWithClipEndPlusValue()
+        {
+            var element = "<audio src=\"http://test.com/test.mp3\" clipEnd=\"+30ms\"/>".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidWithClipEndMinusValue()
+        {
+            var element = "<audio src=\"http://test.com/test.mp3\" clipEnd=\"-30ms\"/>".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidWithValidRepeatDur()
+        {
+            var element = "<audio src=\"http://test.com/test.mp3\" repeatDur=\"300.92ms\"/>".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnInvalidWithInvalidRepeatDurComma()
+        {
+            var element = "<audio src=\"http://test.com/test.mp3\" repeatDur=\"300,92ms\"/>".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidWithRepeatDurPlusValue()
+        {
+            var element = "<audio src=\"http://test.com/test.mp3\" repeatDur=\"+30ms\"/>".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidWithRepeatDurMinusValue()
+        {
+            var element = "<audio src=\"http://test.com/test.mp3\" repeatDur=\"-30ms\"/>".ToXElement();
+            var strategy = new AudioStrategy();
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
     }
 }
