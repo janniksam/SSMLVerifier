@@ -13,7 +13,7 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<say-as interpret-as='time' format='hms12'>2:30pm</say-as>".ToXElement();
             var strategy = new SayAsStrategy();
-            var verificationResult = strategy.Verify(element);
+            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
             Assert.AreEqual(VerificationState.Valid, verificationResult.State);
         }
 
@@ -69,6 +69,33 @@ namespace SSMLVerifierTests.TagStrategies.All
             var element = "<say-as interpret-as='bleep' format='hms12'>2:30pm</say-as>".ToXElement();
             var strategy = new SayAsStrategy();
             var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidWhenInterpretAsIsDateAndFormatIsSet()
+        {
+            var element = "<say-as interpret-as='date' format='mdy'>2:30pm</say-as>".ToXElement();
+            var strategy = new SayAsStrategy();
+            var verificationResult = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnInvalidWhenInterpretAsIsNotDateAndFormatIsSet()
+        {
+            var element = "<say-as interpret-as='unit' format='mdy'>2:30pm</say-as>".ToXElement();
+            var strategy = new SayAsStrategy();
+            var verificationResult = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.InvalidAttribute, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidWhenInterpretAsIsNotDateAndFormatIsNotSet()
+        {
+            var element = "<say-as interpret-as='unit'>2:30pm</say-as>".ToXElement();
+            var strategy = new SayAsStrategy();
+            var verificationResult = strategy.Verify(element);
             Assert.AreEqual(VerificationState.Valid, verificationResult.State);
         }
     }

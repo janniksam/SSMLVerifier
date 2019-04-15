@@ -19,7 +19,7 @@ This is a WIP project. Here is the current state of the implementation:
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) p 
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) prosody 
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) s
-- ![#ffe900](https://placehold.it/15/ffe900/000000?text=+) say-as - <i><b>todo:</b> format attribute needs to be validated</i>
+- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) say-as
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) speak
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) sub
 

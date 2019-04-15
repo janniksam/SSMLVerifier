@@ -23,6 +23,20 @@ namespace SSMLVerifier.TagStrategies.All
             "expletive"
         };
 
+        private readonly IReadOnlyCollection<string> m_validFormatValuesWhenInterpretAsIsDate = new List<string>
+        {
+            "mdy",
+            "dmy",
+            "ymd",
+            "md",
+            "dm",
+            "ym",
+            "my",
+            "d",
+            "m",
+            "y"
+        };
+           
         public SayAsStrategy() : base("say-as", SsmlPlatform.All)
         {
         }
@@ -45,12 +59,6 @@ namespace SSMLVerifier.TagStrategies.All
                 return verificationResult;
             }
 
-            verificationResult = RequiresAttribute(element, AttributeNameFormat, null, optional: true);
-            if (verificationResult != null)
-            {
-                return verificationResult;
-            }
-
             verificationResult = RequiresAttribute(element, AttributeNameDetail,
                 attributeValidationFunc: a => VerifyValues(a, new [] {"1", "2"}), optional: true);
             if (verificationResult != null)
@@ -58,6 +66,11 @@ namespace SSMLVerifier.TagStrategies.All
                 return verificationResult;
             }
 
+            verificationResult = VerifyFormat(element, platform);
+            if (verificationResult != null)
+            {
+                return verificationResult;
+            }
 
             return VerificationResult.Valid;
         }
@@ -97,6 +110,27 @@ namespace SSMLVerifier.TagStrategies.All
             }
 
             return validValues;
+        }
+
+        public VerificationResult VerifyFormat(XElement element, SsmlPlatform platform)  
+        {
+            var containsInterpretAsWithDateValue = RequiresAttribute(element, AttributeNameInterpretAs, null, a => VerifyValues(a, new[] {"date"})) == null;
+            if (containsInterpretAsWithDateValue)
+            {
+                return RequiresAttribute(element, AttributeNameFormat, null, a => VerifyValues(a, m_validFormatValuesWhenInterpretAsIsDate));
+            }
+
+            if (platform == SsmlPlatform.Google)
+            {
+                return RequiresAttribute(element, AttributeNameFormat, null,
+                    a => VerifyMatchesRegEx(a, "^[hmsZ^\\s.!?:;(12|24)]*$"));
+            }
+
+            return RequiresAttribute(element, AttributeNameFormat, null,
+                a => new VerificationResult(VerificationState.InvalidAttribute,
+                    //It doesn't matter what value the attribute has, it's not allowed when interpret-as != date...
+                    $"The element {AttributeNameFormat} can only be used, when the \"{AttributeNameInterpretAs}\"-attribute is set to \"date\""),
+                true);
         }
     }
 }
