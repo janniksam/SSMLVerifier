@@ -43,5 +43,41 @@ namespace SSMLVerifierTests.TagStrategies.All
             var verificationResult = strategy.Verify(element);
             Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
         }
+
+        [TestMethod]
+        public void ReturnValidWithValidTime()
+        {
+            var element = "<break time=\"300.92ms\"/>".ToXElement();
+            var strategy = new BreakStrategy();
+            var verificationResult = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnInvalidWithInvalidTimeComma()
+        {
+            var element = "<break time=\"300,92ms\"/>".ToXElement();
+            var strategy = new BreakStrategy();
+            var verificationResult = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidWithTimePlusValue()
+        {
+            var element = "<break time=\"+30ms\"/>".ToXElement();
+            var strategy = new BreakStrategy();
+            var verificationResult = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
+
+        [TestMethod]
+        public void ReturnValidWithTimeMinusValue()
+        {
+            var element = "<break time=\"-30ms\"/>".ToXElement();
+            var strategy = new BreakStrategy();
+            var verificationResult = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+        }
     }
 }
