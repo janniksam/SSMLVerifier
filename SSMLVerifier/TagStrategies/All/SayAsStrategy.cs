@@ -98,44 +98,5 @@ namespace SSMLVerifier.TagStrategies.All
 
             return validValues;
         }
-
-        /*
-         // Attribute must be interpret-as or format
-  attributes.forEach((attribute) => {
-    if (attribute === 'interpret-as') {
-      if (['characters', 'spell-out', 'cardinal', 'ordinal',
-          'fraction', 'unit', 'date', 'time', 'telephone', 'expletive']
-          .indexOf(element.attributes['interpret-as']) === -1) {
-        // Some attributes are platform specific
-        let supported = false;
-        if ((platform === 'amazon') &&
-          ['number', 'digits', 'address', 'interjection']
-          .indexOf(element.attributes['interpret-as'] !== -1)) {
-          supported = true;
-        } else if ((platform === 'google') &&
-          ['bleep', 'verbatim'].indexOf(element.attributes['interpret-as'] !== -1)) {
-          supported = true;
-        }
-
-        if (!supported) {
-          errors.push(createTagError(element, attribute));
-        }
-      }
-    } else if (attribute === 'format') {
-      if (['mdy', 'dmy', 'ymd', 'md', 'dm', 'ym',
-          'my', 'd', 'm', 'y'].indexOf(element.attributes.format) === -1) {
-        errors.push(createTagError(element, attribute));
-      }
-    } else if ((platform === 'google') && (attribute === 'detail')) {
-      if (['1', '2'].indexOf(element.attributes.detail) === -1) {
-        errors.push(createTagError(element, attribute));
-      }
-    } else {
-      // Invalid attribute
-      errors.push(createTagError(element, attribute, true));
-    }
-  });
-break;
-         */
     }
 }
