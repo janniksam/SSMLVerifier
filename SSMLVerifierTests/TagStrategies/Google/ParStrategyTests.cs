@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SSMLVerifier;
 using SSMLVerifier.Extensions;
 using SSMLVerifier.TagStrategies.Google;
@@ -13,8 +14,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<par></par>".ToXElement();
             var strategy = new ParStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -22,8 +23,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<par><media></media></par>".ToXElement();
             var strategy = new ParStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -31,8 +32,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<par><seq></seq></par>".ToXElement();
             var strategy = new ParStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -40,8 +41,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<par><seq></seq><par></par><media></media></par>".ToXElement();
             var strategy = new ParStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -49,8 +50,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<par><media></media><invalidTag></invalidTag></par>".ToXElement();
             var strategy = new ParStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.ContainerContainsInvalidChilds, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.ContainerContainsInvalidChilds, errors.First().State);
         }
     }
 }

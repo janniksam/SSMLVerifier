@@ -14,8 +14,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<audio><desc></desc></audio>".ToXElement().Elements().First();
             var strategy = new DescStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -23,8 +23,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<par><desc></desc></par>".ToXElement().Elements().First();
             var strategy = new DescStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidParent, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidParent, errors.First().State);
         }
 
         [TestMethod]
@@ -32,8 +32,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<desc></desc>".ToXElement();
             var strategy = new DescStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidParent, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidParent, errors.First().State);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies.All
@@ -17,28 +18,26 @@ namespace SSMLVerifier.TagStrategies.All
         {
         }
 
-        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
+        public override IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var verificationResult =
+            var error =
                 VerifyHasOnlySpecificAttributes(element, null, new[] {AttributeNameStrength, AttributeNameTime});
-            if (verificationResult != null)
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = RequiresAttribute(element, AttributeNameStrength, null, a => VerifyValues(a, m_validStrenghts), true);
-            if (verificationResult != null)
+            error = RequiresAttribute(element, AttributeNameStrength, null, a => VerifyValues(a, m_validStrenghts), true);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = RequiresAttribute(element, AttributeNameTime, null, VerifyTimeDesignation, true);
-            if (verificationResult != null)
+            error = RequiresAttribute(element, AttributeNameTime, null, VerifyTimeDesignation, true);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
-
-            return VerificationResult.Valid;
         }
     }
 }

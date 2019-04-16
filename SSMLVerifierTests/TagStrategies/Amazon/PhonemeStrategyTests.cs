@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SSMLVerifier;
 using SSMLVerifier.Extensions;
 using SSMLVerifier.TagStrategies.Amazon;
@@ -13,8 +14,8 @@ namespace SSMLVerifierTests.TagStrategies.Amazon
         {
             var element = "<phoneme alphabet=\"ipa\" ph=\"ˈpi.kæn\">pecan</phoneme>".ToXElement();
             var strategy = new PhonemeStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -22,8 +23,8 @@ namespace SSMLVerifierTests.TagStrategies.Amazon
         {
             var element = "<phoneme ph=\"ˈpi.kæn\">pecan</phoneme>".ToXElement();
             var strategy = new PhonemeStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.MissingAttribute, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.MissingAttribute, errors.First().State);
         }
 
         [TestMethod]
@@ -31,8 +32,8 @@ namespace SSMLVerifierTests.TagStrategies.Amazon
         {
             var element = "<phoneme alphabet=\"ipa\">pecan</phoneme>".ToXElement();
             var strategy = new PhonemeStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.MissingAttribute, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.MissingAttribute, errors.First().State);
         }
 
         [TestMethod]
@@ -40,8 +41,8 @@ namespace SSMLVerifierTests.TagStrategies.Amazon
         {
             var element = "<phoneme alphabet=\"ipa2\" ph=\"ˈpi.kæn\">pecan</phoneme>".ToXElement();
             var strategy = new PhonemeStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies.All
 {
@@ -12,72 +13,66 @@ namespace SSMLVerifier.TagStrategies.All
         {
         }
 
-        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
+        public override IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var verificationResult = RequiresAttribute(element, "src");
-            if (verificationResult != null)
+            var error = RequiresAttribute(element, "src");
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = VerifyGoogleSpecificAttributes(element, platform);
-            if (verificationResult != null)
+            foreach (var result in VerifyGoogleSpecificAttributes(element, platform))
             {
-                return verificationResult;
+                yield return result;
             }
-            
-            return VerificationResult.Valid;
         }
 
-        private VerificationResult VerifyGoogleSpecificAttributes(XElement element, SsmlPlatform platform)
+        private IEnumerable<SSMLValidationError> VerifyGoogleSpecificAttributes(XElement element, SsmlPlatform platform)
         {
             if (platform != SsmlPlatform.Google)
             {
-                return null;
+                yield break;
             }
 
-            var verificationResult = RequiresAttribute(element, "clipBegin", null, VerifyTimeDesignation, true);
-            if (verificationResult != null)
+            var error = RequiresAttribute(element, "clipBegin", null, VerifyTimeDesignation, true);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            //todo Time Verification
-            verificationResult = RequiresAttribute(element, "clipEnd", null, VerifyTimeDesignation, true);
-            if (verificationResult != null)
+            error = RequiresAttribute(element, "clipEnd", null, VerifyTimeDesignation, true);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = RequiresAttribute(element, "speed",
+            error = RequiresAttribute(element, "speed",
                 attributeValidationFunc: a => VerifyMatchesRegEx(a, RegularExpressionSpeed), optional: true);
-            if (verificationResult != null)
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = RequiresAttribute(element, "repeatCount",
+            error = RequiresAttribute(element, "repeatCount",
                 attributeValidationFunc: a => VerifyMatchesRegEx(a, RegularExpressionRepeatCount), optional: true);
-            if (verificationResult != null)
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
             //todo Time Verification
-            verificationResult = RequiresAttribute(element, "repeatDur", null, VerifyTimeDesignation, true);
-            if (verificationResult != null)
+            error = RequiresAttribute(element, "repeatDur", null, VerifyTimeDesignation, true);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = RequiresAttribute(element, "soundLevel",
+            error = RequiresAttribute(element, "soundLevel",
                 attributeValidationFunc: a => VerifyMatchesRegEx(a, RegularExpressionSoundLevel), optional: true);
-            if (verificationResult != null)
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
-
-            return null;
         }
     }
 }

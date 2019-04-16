@@ -17,7 +17,7 @@ namespace SSMLVerifier.TagStrategies.All
         {
         }
 
-        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
+        public override IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
             var validLevels = m_validLevels.ToList();
             if (platform == SsmlPlatform.Google)
@@ -25,12 +25,11 @@ namespace SSMLVerifier.TagStrategies.All
                 validLevels.Add("none");
             }
 
-            var verificationResult = RequiresAttribute(element, AttributeNameLevel, null, a => VerifyValues(a, validLevels));
-            if (verificationResult != null)
+            var error = RequiresAttribute(element, AttributeNameLevel, null, a => VerifyValues(a, validLevels));
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
-            return VerificationResult.Valid;
         }
     }
 }

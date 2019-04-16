@@ -41,38 +41,36 @@ namespace SSMLVerifier.TagStrategies.All
         {
         }
 
-        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
+        public override IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
             var validInterpretAsValues = GetValidInterpretAsValues(platform);
             var allowedAttributes = GetAllowedAttributes(platform);
 
-            var verificationResult = VerifyHasOnlySpecificAttributes(element, null, allowedAttributes);
-            if (verificationResult != null)
+            var error = VerifyHasOnlySpecificAttributes(element, null, allowedAttributes);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = RequiresAttribute(element, AttributeNameInterpretAs,
+            error = RequiresAttribute(element, AttributeNameInterpretAs,
                 attributeValidationFunc: a => VerifyValues(a, validInterpretAsValues), optional: true);
-            if (verificationResult != null)
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = RequiresAttribute(element, AttributeNameDetail,
+            error = RequiresAttribute(element, AttributeNameDetail,
                 attributeValidationFunc: a => VerifyValues(a, new [] {"1", "2"}), optional: true);
-            if (verificationResult != null)
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = VerifyFormat(element, platform);
-            if (verificationResult != null)
+            error = VerifyFormat(element, platform);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
-
-            return VerificationResult.Valid;
         }
 
         private IReadOnlyCollection<string> GetAllowedAttributes(SsmlPlatform platform)
@@ -112,7 +110,7 @@ namespace SSMLVerifier.TagStrategies.All
             return validValues;
         }
 
-        public VerificationResult VerifyFormat(XElement element, SsmlPlatform platform)  
+        public SSMLValidationError VerifyFormat(XElement element, SsmlPlatform platform)  
         {
             var containsInterpretAsWithDateValue = RequiresAttribute(element, AttributeNameInterpretAs, null, a => VerifyValues(a, new[] {"date"})) == null;
             if (containsInterpretAsWithDateValue)
@@ -127,7 +125,7 @@ namespace SSMLVerifier.TagStrategies.All
             }
 
             return RequiresAttribute(element, AttributeNameFormat, null,
-                a => new VerificationResult(VerificationState.InvalidAttribute,
+                a => new SSMLValidationError(VerificationState.InvalidAttribute,
                     //It doesn't matter what value the attribute has, it's not allowed when interpret-as != date...
                     $"The element {AttributeNameFormat} can only be used, when the \"{AttributeNameInterpretAs}\"-attribute is set to \"date\""),
                 true);

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SSMLVerifier;
 using SSMLVerifier.Extensions;
 using SSMLVerifier.TagStrategies.All;
@@ -13,8 +14,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<say-as interpret-as='time' format='hms12'>2:30pm</say-as>".ToXElement();
             var strategy = new SayAsStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -22,8 +23,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<say-as test='123' interpret-as='time' format='hms12'>2:30pm</say-as>".ToXElement();
             var strategy = new SayAsStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.InvalidAttribute, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.InvalidAttribute, errors.First().State);
         }
 
         [TestMethod]
@@ -31,8 +32,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<say-as interpret-as='test' format='hms12'>2:30pm</say-as>".ToXElement();
             var strategy = new SayAsStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -40,8 +41,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<say-as interpret-as='test' format='hms12' detail='-3'>2:30pm</say-as>".ToXElement();
             var strategy = new SayAsStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -49,8 +50,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<say-as interpret-as='test' format='hms12' detail='3'>2:30pm</say-as>".ToXElement();
             var strategy = new SayAsStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.InvalidAttribute, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.InvalidAttribute, errors.First().State);
         }
 
 
@@ -59,8 +60,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<say-as interpret-as='bleep' format='hms12'>2:30pm</say-as>".ToXElement();
             var strategy = new SayAsStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Amazon);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Amazon);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -68,8 +69,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<say-as interpret-as='bleep' format='hms12'>2:30pm</say-as>".ToXElement();
             var strategy = new SayAsStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -77,8 +78,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<say-as interpret-as='date' format='mdy'>2:30pm</say-as>".ToXElement();
             var strategy = new SayAsStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -86,8 +87,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<say-as interpret-as='unit' format='mdy'>2:30pm</say-as>".ToXElement();
             var strategy = new SayAsStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.InvalidAttribute, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.InvalidAttribute, errors.First().State);
         }
 
         [TestMethod]
@@ -95,8 +96,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<say-as interpret-as='unit'>2:30pm</say-as>".ToXElement();
             var strategy = new SayAsStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
     }
 }

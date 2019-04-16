@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies
 {
@@ -8,6 +9,6 @@ namespace SSMLVerifier.TagStrategies
 
         bool IsValidForPlatform(SsmlPlatform platform);
 
-        VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All);
+        IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All);
     }
 }

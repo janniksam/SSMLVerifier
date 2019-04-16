@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies.Amazon
@@ -15,21 +16,19 @@ namespace SSMLVerifier.TagStrategies.Amazon
             
         }
 
-        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
+        public override IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var verificationResult = RequiresAttribute(element, "alphabet", null, a => VerifyValues(a, m_validAlphabets));
-            if (verificationResult != null)
+            var error = RequiresAttribute(element, "alphabet", null, a => VerifyValues(a, m_validAlphabets));
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = RequiresAttribute(element, "ph");
-            if (verificationResult != null)
+            error = RequiresAttribute(element, "ph");
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
-
-            return VerificationResult.Valid;
         }
     }
 }

@@ -9,14 +9,17 @@ namespace SSMLVerifier.TagStrategies.Google
         {
         }
 
-        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
+        public override IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var validationResult = VerifyContainsOnlySpecificElements(element, new List<string>
+            var error = VerifyContainsOnlySpecificElements(element, new List<string>
             {
                 "par", "seq", "media"
             });
-            
-            return validationResult ?? VerificationResult.Valid;
+
+            if (error != null)
+            {
+                yield return error;
+            }
         }
     }
 }
