@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SSMLVerifier;
 using SSMLVerifier.Extensions;
 using SSMLVerifier.TagStrategies.All;
@@ -13,8 +14,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<break time=\"3s\" strength=\"weak\"/>".ToXElement();
             var strategy = new BreakStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -22,8 +23,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<break></break>".ToXElement();
             var strategy = new BreakStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -31,8 +32,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<break strength=\"weak\" test=\"bla\"></break>".ToXElement();
             var strategy = new BreakStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.InvalidAttribute, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.InvalidAttribute, errors.First().State);
         }
 
         [TestMethod]
@@ -40,8 +41,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<break strength=\"superstrong\"></break>".ToXElement();
             var strategy = new BreakStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -49,8 +50,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<break time=\"300.92ms\"/>".ToXElement();
             var strategy = new BreakStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -58,8 +59,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<break time=\"300,92ms\"/>".ToXElement();
             var strategy = new BreakStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -67,8 +68,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<break time=\"+30ms\"/>".ToXElement();
             var strategy = new BreakStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -76,8 +77,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<break time=\"-30ms\"/>".ToXElement();
             var strategy = new BreakStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
     }
 }

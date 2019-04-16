@@ -29,7 +29,7 @@ namespace SSMLVerifier.TagStrategies
             return TagName.Equals(tag);
         }
 
-        protected VerificationResult RequiresAttribute(XElement element, string attributeName, string prefix = null, Func<XAttribute, VerificationResult> attributeValidationFunc = null, bool optional = false)
+        protected SSMLValidationError RequiresAttribute(XElement element, string attributeName, string prefix = null, Func<XAttribute, SSMLValidationError> attributeValidationFunc = null, bool optional = false)
         {
             if (element == null)
             {
@@ -48,18 +48,12 @@ namespace SSMLVerifier.TagStrategies
 
             if (attribute == null)
             {
-                return new VerificationResult(VerificationState.MissingAttribute,
+                return new SSMLValidationError(VerificationState.MissingAttribute,
                     $"The element {TagName} doesnt include a {attributeName}-attribute");
             }
 
             var attributeValidationResult = attributeValidationFunc?.Invoke(attribute);
-            if (attributeValidationResult != null &&
-                attributeValidationResult.State != VerificationState.Valid)
-            {
-                return attributeValidationResult;
-            }
-
-            return null;
+            return attributeValidationResult;
         }
 
         private static XAttribute GetAttribute(XElement element, string attributeName, string prefix)
@@ -80,7 +74,7 @@ namespace SSMLVerifier.TagStrategies
             return attribute;
         }
 
-        protected VerificationResult VerifyHasOnlySpecificAttributes(XElement element, string prefix, IReadOnlyCollection<string> validAttributeNames)
+        protected SSMLValidationError VerifyHasOnlySpecificAttributes(XElement element, string prefix, IReadOnlyCollection<string> validAttributeNames)
         {
             if (prefix == null)
             {
@@ -91,7 +85,7 @@ namespace SSMLVerifier.TagStrategies
                         continue;
                     }
 
-                    return new VerificationResult(
+                    return new SSMLValidationError(
                         VerificationState.InvalidAttribute,
                         $"The element {TagName} can only have the following attributes: {string.Join(",", validAttributeNames)}, but there was a {xAttribute.Name.LocalName}");
                 }
@@ -107,7 +101,7 @@ namespace SSMLVerifier.TagStrategies
                         continue;
                     }
 
-                    return new VerificationResult(
+                    return new SSMLValidationError(
                         VerificationState.InvalidAttribute,
                         $"The element {TagName} can only have the following attributes: {string.Join(",", validAttributeNames)}, but there was a {xAttribute.Name.LocalName}");
                 }
@@ -116,7 +110,7 @@ namespace SSMLVerifier.TagStrategies
             return null;
         }
 
-        protected VerificationResult VerifyContainsOnlySpecificElements(XElement element, List<string> validTags)
+        protected SSMLValidationError VerifyContainsOnlySpecificElements(XElement element, List<string> validTags)
         {
             var xElements = element.Elements();
             foreach (var xElement in xElements)
@@ -126,7 +120,7 @@ namespace SSMLVerifier.TagStrategies
                     continue;
                 }
 
-                return new VerificationResult(
+                return new SSMLValidationError(
                     VerificationState.ContainerContainsInvalidChilds,
                     $"The element {TagName} can only contain the following elements: {string.Join(",", validTags)}, but there was a {xElement.Name.LocalName}");
             }
@@ -134,18 +128,18 @@ namespace SSMLVerifier.TagStrategies
             return null;
         }
 
-        protected VerificationResult VerifyNoAttributesAllowed(XElement element)
+        protected SSMLValidationError VerifyNoAttributesAllowed(XElement element)
         {
             if (element.HasAttributes)
             {
-                return new VerificationResult(VerificationState.InvalidAttribute,
+                return new SSMLValidationError(VerificationState.InvalidAttribute,
                     $"The element with the name {TagName} should not have any attributes.");
             }
 
             return null;
         }
 
-        protected VerificationResult VerifyValues(XAttribute attribute, IReadOnlyCollection<string> validValues)
+        protected SSMLValidationError VerifyValues(XAttribute attribute, IReadOnlyCollection<string> validValues)
         {
             if (!validValues.Contains(attribute.Value))
             {
@@ -155,33 +149,33 @@ namespace SSMLVerifier.TagStrategies
             return null;
         }
 
-        protected VerificationResult VerifyHasValidParent(XObject element, string validParent)
+        protected SSMLValidationError VerifyHasValidParent(XObject element, string validParent)
         {
             if (element.Parent == null || element.Parent.Name.LocalName != validParent)
             {
-                return new VerificationResult(VerificationState.InvalidParent, $"The element {TagName} can only be used inside an {validParent} element.");
+                return new SSMLValidationError(VerificationState.InvalidParent, $"The element {TagName} can only be used inside an {validParent} element.");
             }
 
             return null;
         }
 
-        protected VerificationResult VerifyMatchesRegEx(XAttribute attribute, string regularExpression)
+        protected SSMLValidationError VerifyMatchesRegEx(XAttribute attribute, string regularExpression)
         {
             var regex = new Regex(regularExpression);
             if (regex.IsMatch(attribute.Value))
             {
-                return VerificationResult.Valid;
+                return null;
             }
 
-            return new VerificationResult(VerificationState.InvalidAttributeValue,
+            return new SSMLValidationError(VerificationState.InvalidAttributeValue,
                 $"The element {TagName} does include a {attribute.Name.LocalName}-attribute, but the value {attribute.Value} is invalid.\r\n" +
                 $"The value has to match the regular expression: \"{regularExpression}\"");
         }
 
-        protected VerificationResult VerifyTimeDesignation(XAttribute attribute)
+        protected SSMLValidationError VerifyTimeDesignation(XAttribute attribute)
         {
             var verificationResult = VerifyMatchesRegEx(attribute, "^[+-]?\\d+(\\.\\d+)?(h|min|s|ms)$");
-            if (verificationResult.State == VerificationState.Valid)
+            if (verificationResult == null)
             {
                 return null;
             }
@@ -191,13 +185,13 @@ namespace SSMLVerifier.TagStrategies
         }
 
 
-        private VerificationResult CreateInvalidAttributeValueResult(XAttribute attribute, IEnumerable<string> validAttributes)
+        private SSMLValidationError CreateInvalidAttributeValueResult(XAttribute attribute, IEnumerable<string> validAttributes)
         {
-            return new VerificationResult(VerificationState.InvalidAttributeValue,
+            return new SSMLValidationError(VerificationState.InvalidAttributeValue,
                 $"The element {TagName} does include a {attribute.Name.LocalName}-attribute, but the value {attribute.Value} is invalid.\r\n" +
                 $"Valid values are: \"{string.Join(",", validAttributes)}\"");
         }
 
-        public abstract VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All);
+        public abstract IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All);
     }
 }

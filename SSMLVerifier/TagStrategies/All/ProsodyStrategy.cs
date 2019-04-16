@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies.All
@@ -26,38 +27,36 @@ namespace SSMLVerifier.TagStrategies.All
             m_regExVolume = $"^([+-]\\d+(\\.\\d+)?dB)|{string.Join("|", m_validVolumes)}$";
         }
 
-        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
+        public override IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var verificationResult =
+            var error =
                 VerifyHasOnlySpecificAttributes(element, null,
                     new[] {AttributeNameRate, AttributeNamePitch, AttributeNameVolume});
-            if (verificationResult != null)
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = RequiresAttribute(element, AttributeNameRate, null,
+            error = RequiresAttribute(element, AttributeNameRate, null,
                 a => VerifyMatchesRegEx(a, m_regExRate), true);
-            if (verificationResult != null)
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = RequiresAttribute(element, AttributeNamePitch, null,
+            error = RequiresAttribute(element, AttributeNamePitch, null,
                 a => VerifyMatchesRegEx(a, m_regExPitch), true);
-            if (verificationResult != null)
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult = RequiresAttribute(element, AttributeNameVolume, null,
+            error = RequiresAttribute(element, AttributeNameVolume, null,
                 a => VerifyMatchesRegEx(a, m_regExVolume), true);
-            if (verificationResult != null)
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
-
-            return VerificationResult.Valid;
         }
     }
 }

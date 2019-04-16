@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies.Google
 {
@@ -14,66 +15,57 @@ namespace SSMLVerifier.TagStrategies.Google
         {
         }
 
-        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
+        public override IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var verificationResult = RequiresAttribute(element, "id", "xml", a => VerifyMatchesRegEx(a, RegExId), true);
-            if (verificationResult != null)
+            var error = RequiresAttribute(element, "id", "xml", a => VerifyMatchesRegEx(a, RegExId), true);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult =
-                RequiresAttribute(element, "begin", null, VerifyTimeDesignation, true);
-            if (verificationResult != null)
+            error = RequiresAttribute(element, "begin", null, VerifyTimeDesignation, true);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult =
-                RequiresAttribute(element, "end", null, VerifyTimeDesignation, true);
-            if (verificationResult != null)
+            error = RequiresAttribute(element, "end", null, VerifyTimeDesignation, true);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult =
-                RequiresAttribute(element, "repeatCount", null,
+            error = RequiresAttribute(element, "repeatCount", null,
                     a => VerifyMatchesRegEx(a, RegularExpressionRepeatCount), true);
-            if (verificationResult != null)
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult =
-                RequiresAttribute(element, "repeatDur", null, VerifyTimeDesignation, true);
-            if (verificationResult != null)
+            error = RequiresAttribute(element, "repeatDur", null, VerifyTimeDesignation, true);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult =
-                RequiresAttribute(element, "soundLevel", null, a => VerifyMatchesRegEx(a, RegularExpressionSoundLevel),
+            error = RequiresAttribute(element, "soundLevel", null, a => VerifyMatchesRegEx(a, RegularExpressionSoundLevel),
                     true);
-            if (verificationResult != null)
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult =
-                RequiresAttribute(element, "fadeInDur", null, VerifyTimeDesignation, true);
-            if (verificationResult != null)
+            error = RequiresAttribute(element, "fadeInDur", null, VerifyTimeDesignation, true);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
 
-            verificationResult =
-                RequiresAttribute(element, "fadeOutDur", null, VerifyTimeDesignation, true);
-            if (verificationResult != null)
+            error = RequiresAttribute(element, "fadeOutDur", null, VerifyTimeDesignation, true);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
-
-            return VerificationResult.Valid;
         }
     }
 }

@@ -14,8 +14,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media xml:id=\"123\" repeatCount=\"3\" soundLevel=\"+2.28dB\" fadeInDur=\"2s\" fadeOutDur=\"0.2s\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -23,8 +23,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media begin=\"300.92ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -32,8 +32,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media begin=\"300,92ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -41,8 +41,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media begin=\"+30ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -50,8 +50,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media begin=\"-30ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -59,8 +59,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media end=\"300.92ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -68,8 +68,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media end=\"300,92ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -77,8 +77,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media end=\"+30ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -86,8 +86,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media end=\"-30ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -95,8 +95,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media repeatCount=\"30\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -104,8 +104,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media repeatCount=\"3s\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -113,8 +113,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media repeatCount=\"-3\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -122,8 +122,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media repeatCount=\"+3\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -131,8 +131,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media repeatDur=\"300.92ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -140,8 +140,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media repeatDur=\"300,92ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -149,8 +149,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media repeatDur=\"+30ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -158,8 +158,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media repeatDur=\"-30ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -167,8 +167,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media soundLevel=\"+40dB\" src=\"http://test.com/test.mp3\" />".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -176,8 +176,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media soundLevel=\"-39dB\" src=\"http://test.com/test.mp3\" />".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -185,8 +185,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media soundLevel=\"+40dBs\" src=\"http://test.com/test.mp3\" />".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -194,8 +194,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media soundLevel=\"-41dB\" src=\"http://test.com/test.mp3\" />".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -203,8 +203,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media soundLevel=\"+41dB\" src=\"http://test.com/test.mp3\" />".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -212,8 +212,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media soundLevel=\"+30.003dB\" src=\"http://test.com/test.mp3\" />".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -221,8 +221,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media soundLevel=\"+30.03dB\" src=\"http://test.com/test.mp3\" />".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -230,8 +230,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media soundLevel=\"+30.3dB\" src=\"http://test.com/test.mp3\" />".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -239,8 +239,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media fadeInDur=\"300.92ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -248,8 +248,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media fadeInDur=\"300,92ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -257,8 +257,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media fadeInDur=\"+30ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -266,8 +266,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media fadeInDur=\"-30ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -275,8 +275,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media fadeOutDur=\"300.92ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -284,8 +284,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media fadeOutDur=\"300,92ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
 
         [TestMethod]
@@ -293,8 +293,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media fadeOutDur=\"+30ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -302,8 +302,8 @@ namespace SSMLVerifierTests.TagStrategies.Google
         {
             var element = "<media fadeOutDur=\"-30ms\"/>".ToXElement();
             var strategy = new MediaStrategy();
-            var verificationResult = strategy.Verify(element, SsmlPlatform.Google);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element, SsmlPlatform.Google);
+            Assert.AreEqual(0, errors.Count());
         }
     }
 }

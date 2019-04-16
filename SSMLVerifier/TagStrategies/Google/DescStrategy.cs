@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies.Google
 {
@@ -10,14 +11,13 @@ namespace SSMLVerifier.TagStrategies.Google
         {
         }
 
-        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
+        public override IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var verificationResult = VerifyHasValidParent(element, TagNameAudio);
-            if (verificationResult != null)
+            var error = VerifyHasValidParent(element, TagNameAudio);
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
-            return VerificationResult.Valid;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies.All
 {
@@ -8,15 +9,13 @@ namespace SSMLVerifier.TagStrategies.All
         {
         }
 
-        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
+        public override IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var validationResult = VerifyHasOnlySpecificAttributes(element, null, new []{ "alias" });
-            if (validationResult != null)
+            var error = VerifyHasOnlySpecificAttributes(element, null, new []{ "alias" });
+            if (error != null)
             {
-                return validationResult;
+                yield return error;
             }
-
-            return VerificationResult.Valid;
         }
     }
 }

@@ -16,15 +16,13 @@ namespace SSMLVerifier.TagStrategies.Amazon
         {
         }
 
-        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
+        public override IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var verificationResult = RequiresAttribute(element, AttributeNameName, null, v => VerifyValues(v, m_validEffects));
-            if (verificationResult != null)
+            var error = RequiresAttribute(element, AttributeNameName, null, v => VerifyValues(v, m_validEffects));
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
-
-            return VerificationResult.Valid;
         }
     }
 }

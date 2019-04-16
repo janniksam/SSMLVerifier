@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Linq;
+using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SSMLVerifier;
 using SSMLVerifier.Extensions;
@@ -14,8 +15,8 @@ namespace SSMLVerifierTests.TagStrategies.Amazon
         {
             var element = "<voice name=\"Kendra\">I am not a real human.</voice>".ToXElement();
             var strategy = new VoiceStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -23,8 +24,8 @@ namespace SSMLVerifierTests.TagStrategies.Amazon
         {
             var element = "<voice anoherName=\"Kendra\">I am not a real human.</voice>".ToXElement();
             var strategy = new VoiceStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.MissingAttribute, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.MissingAttribute, errors.First().State);
         }
 
         [TestMethod]
@@ -32,8 +33,8 @@ namespace SSMLVerifierTests.TagStrategies.Amazon
         {
             var element = "<voice name=\"Karlheinz\">I am not a real human.</voice>".ToXElement();
             var strategy = new VoiceStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.InvalidAttributeValue, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.InvalidAttributeValue, errors.First().State);
         }
     }
 }

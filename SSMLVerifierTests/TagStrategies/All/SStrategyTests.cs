@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SSMLVerifier;
 using SSMLVerifier.Extensions;
 using SSMLVerifier.TagStrategies.All;
@@ -13,8 +14,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<s><p></p></s>".ToXElement();
             var strategy = new SStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.Valid, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(0, errors.Count());
         }
 
         [TestMethod]
@@ -22,8 +23,8 @@ namespace SSMLVerifierTests.TagStrategies.All
         {
             var element = "<s name=\"test\"></s>".ToXElement();
             var strategy = new SStrategy();
-            var verificationResult = strategy.Verify(element);
-            Assert.AreEqual(VerificationState.InvalidAttribute, verificationResult.State);
+            var errors = strategy.Verify(element);
+            Assert.AreEqual(VerificationState.InvalidAttribute, errors.First().State);
         }
     }
 }

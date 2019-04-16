@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace SSMLVerifier.TagStrategies.Amazon
 {
@@ -16,15 +17,13 @@ namespace SSMLVerifier.TagStrategies.Amazon
         {
         }
 
-        public override VerificationResult Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
+        public override IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
-            var verificationResult = RequiresAttribute(element, "name", null, a => VerifyValues(a, m_validVoiceNames));
-            if (verificationResult != null)
+            var error = RequiresAttribute(element, "name", null, a => VerifyValues(a, m_validVoiceNames));
+            if (error != null)
             {
-                return verificationResult;
+                yield return error;
             }
-
-            return VerificationResult.Valid;
         }
     }
 }
