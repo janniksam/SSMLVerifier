@@ -45,14 +45,17 @@ The basic usage looks like this:
 ```cs
 const string testSsml = "<speak>Hello <break strength='weak' time='1s'/> World!</speak>";
 var verifier = new Verifer();
-var result = verifier.Verify(testSsml);
-if(result.State == VerificationState.Valid)
+var errors = verifier.Verify(testSsml);
+if(errors.Count() == 0)
 {
    Console.WriteLine("SSML is valid!");
 }
 else
 {
-   Console.WriteLine(result.Error);
+   foreach(var error in errors)
+   {
+      Console.WriteLine(result.Error);
+   }
 }
 ```
 
