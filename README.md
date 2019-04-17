@@ -54,7 +54,7 @@ else
 {
    foreach(var error in errors)
    {
-      Console.WriteLine(result.Error);
+      Console.WriteLine(error.Error);
    }
 }
 ```
