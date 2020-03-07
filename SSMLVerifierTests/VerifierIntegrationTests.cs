@@ -61,6 +61,7 @@ namespace SSMLVerifierTests
                                     "   <lang xml:lang='de-DE'></lang>" +
                                     "   <amazon:emotion name=\"excited\" intensity=\"high\" />" +
                                     "   <amazon:effect name=\"whispered\" />" +
+                                    "   <amazon:domain name=\"news\" />" +
                                     "</speak>";
 
             var errors = m_verifier.Verify(testSsml, SsmlPlatform.Amazon);

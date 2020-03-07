@@ -25,6 +25,7 @@ namespace SSMLVerifier
             new SStrategy(),
             new SubStrategy(),
             //Amazon
+            new AmazonDomainStrategy(),
             new AmazonEffectStrategy(),
             new AmazonEmotionStrategy(),
             new LangStrategy(),
