@@ -26,6 +26,7 @@ namespace SSMLVerifier
             new SubStrategy(),
             //Amazon
             new AmazonEffectStrategy(),
+            new AmazonEmotionStrategy(),
             new LangStrategy(),
             new PhonemeStrategy(),
             new VoiceStrategy(),
@@ -88,12 +89,14 @@ namespace SSMLVerifier
 
         private IEnumerable<SSMLValidationError> Verify(XElement element, SsmlPlatform platform = SsmlPlatform.All)
         {
+            var elementName = element.GetNameWithAlias();
+
             var tagStrategy = m_strategies.FirstOrDefault(
-                p => p.IsResponsibleFor(element.Name.LocalName) &&
+                p => p.IsResponsibleFor(elementName) &&
                      p.IsValidForPlatform(platform));
             if (tagStrategy == null)
             {
-                yield return new SSMLValidationError(VerificationState.InvalidTag, $"Invalid tag {element.Name.LocalName}");
+                yield return new SSMLValidationError(VerificationState.InvalidTag, $"Invalid tag {elementName}");
                 yield break;
             }
 

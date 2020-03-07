@@ -25,7 +25,8 @@ This is a WIP project. Here is the current state of the implementation:
 
 #### Amazon tags:
 
-- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) amazon:effects
+- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) amazon:effect
+- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) amazon:emotion
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) lang
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) phoneme
 - ![#c5f015](https://placehold.it/15/049b2c/000000?text=+) voice
