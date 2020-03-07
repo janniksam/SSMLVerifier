@@ -4,7 +4,6 @@ It is based of a javascript implementation found here:
 https://github.com/gsdriver/ssml-check
 
 [![Build status master](https://ci.appveyor.com/api/projects/status/uyat18oaarhpwd50?svg=true&passingText=master%20-%20passing&failingText=master%20-%20failing&pendingText=master%20-%20pending)](https://ci.appveyor.com/project/janniksam/SSMLVerifier) 
-[![Build status dev](https://ci.appveyor.com/api/projects/status/uyat18oaarhpwd50/branch/dev?svg=true&passingText=dev%20-%20passing&failingText=dev%20-%20failing&pendingText=dev%20-%20pending)](https://ci.appveyor.com/project/janniksam/SSMLVerifier/branch/dev)
 [![NuGet version](https://badge.fury.io/nu/SSMLVerifier.svg)](https://badge.fury.io/nu/SSMLVerifier)
 
 ## WIP
@@ -25,7 +24,9 @@ This is a WIP project. Here is the current state of the implementation:
 
 #### Amazon tags:
 
-- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) amazon:effects
+- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) amazon:domain
+- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) amazon:effect
+- ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) amazon:emotion
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) lang
 - ![#049b2c](https://placehold.it/15/049b2c/000000?text=+) phoneme
 - ![#c5f015](https://placehold.it/15/049b2c/000000?text=+) voice

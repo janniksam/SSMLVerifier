@@ -57,7 +57,12 @@ namespace SSMLVerifierTests
         [TestMethod]
         public void ShouldReturnValidWithOnlyAValidPlatformSpecificTag()
         {
-            const string testSsml = "<speak><lang xml:lang='de-DE'></lang></speak>";
+            const string testSsml = "<speak>" +
+                                    "   <lang xml:lang='de-DE'></lang>" +
+                                    "   <amazon:emotion name=\"excited\" intensity=\"high\" />" +
+                                    "   <amazon:effect name=\"whispered\" />" +
+                                    "   <amazon:domain name=\"news\" />" +
+                                    "</speak>";
 
             var errors = m_verifier.Verify(testSsml, SsmlPlatform.Amazon);
             Assert.AreEqual(0, errors.Count());

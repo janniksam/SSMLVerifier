@@ -49,7 +49,7 @@ namespace SSMLVerifier.TagStrategies
             if (attribute == null)
             {
                 return new SSMLValidationError(VerificationState.MissingAttribute,
-                    $"The element {TagName} doesnt include a {attributeName}-attribute");
+                    $"The element {TagName} doesn't include a {attributeName}-attribute");
             }
 
             var attributeValidationResult = attributeValidationFunc?.Invoke(attribute);
